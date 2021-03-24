@@ -1,0 +1,42 @@
+<?php
+
+namespace Octohook\LaravelSegment\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Octohook\LaravelSegment\Facades\Segment;
+
+class ApplySegmentGlobals
+{
+    public function handle(Request $request, Closure $next, $guard = null)
+    {
+        /**
+         * Set the current logged in User as global.
+         */
+        if ($user = Auth::guard($guard)->user()) {
+            Segment::setGlobalUser($user);
+        }
+
+        /**
+         * Build some nice default context based on the current request.
+         */
+        Segment::setGlobalContext($this->getContext($request));
+    }
+
+    private function getContext(Request $request): array
+    {
+        return collect([
+            "ip" => $request->ip(),
+            "locale" => $request->getPreferredLanguage(),
+            "userAgent" => $request->userAgent(),
+
+            /**
+             * This is a solid default, generally backend calls
+             * to Segment are not responsible to determining
+             * whether or a not a user is active or not.
+             */
+            "active" => false,
+        ])->filter()->all();
+    }
+}

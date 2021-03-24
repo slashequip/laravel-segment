@@ -1,0 +1,56 @@
+{
+    "name": "octohook/laravel-segment",
+    "description": "laravel-segment",
+    "keywords": [
+        "octohook",
+        "laravel-segment"
+    ],
+    "homepage": "https://github.com/octohook/laravel-segment",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sam Jones",
+            "email": "sam@slashequip.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "illuminate/contracts": "^8.0",
+        "myclabs/php-enum": "^1.8"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.13",
+        "pestphp/pest": "^1.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Octohook\\LaravelSegment\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Octohook\\LaravelSegment\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Octohook\\LaravelSegment\\LaravelSegmentServiceProvider"
+            ],
+            "aliases": {
+                "Segment": "Octohook\\LaravelSegment\\Facades\\Segment"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
