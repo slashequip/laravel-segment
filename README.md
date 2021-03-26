@@ -23,7 +23,7 @@ You can publish the config file with:
 php artisan vendor:publish --provider="Octohook\LaravelSegment\LaravelSegmentServiceProvider"
 ```
 
-This is the contents of the published config file:
+This is the contents of the published config file, which should be located at `config/segment.php`:
 
 ```php
 return [
@@ -50,6 +50,27 @@ return [
     'safe_mode' => env('SEGMENT_SAFE_MODE', true),
 ];
 ```
+
+## Identifying Segment Users
+
+When we talk about a 'user' we mean an instance of `Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment`
+the package comes with a trait (and the interface) you can attach to your default User model;
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use Octohook\LaravelSegment\Traits\HasSegmentIdentityById;
+use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+
+class User extends Model implements CanBeIdentifiedForSegment
+{
+    use HasSegmentIdentityById;
+}
+```
+
+Using this trait will automagically use your users' primary key as the identifier
+that is sent to Segment. Alternatively you can implement your own instance of the
+`public function getSegmentIdentifier(): string;` method on your User model and not
+use the trait.
 
 ## Usage
 
