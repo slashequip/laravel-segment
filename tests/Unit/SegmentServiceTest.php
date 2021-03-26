@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Client\Request;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Http;
 use Octohook\LaravelSegment\Facades\Segment;
 use Octohook\LaravelSegment\SegmentService;
@@ -97,4 +99,28 @@ it('can identify a user using the identify method with global user and context',
                 ]
             ]);
     });
+});
+
+it('terminates the segment service on job processed', function () {
+    // Given we are spying on the service
+    $service = $this->spy(SegmentService::class);
+
+    // When we fire the job processed event
+    event(new JobProcessed('default', Mockery::mock(Job::class)));
+
+    // Then we have called the terminate method
+    $service->shouldHaveReceived('terminate')
+        ->once();
+});
+
+it('terminates the segment service on app terminate', function () {
+    // Given we are spying on the service
+    $service = $this->spy(SegmentService::class);
+
+    // When we terminate the app
+    $this->app->terminate();
+
+    // Then we have called the terminate method
+    $service->shouldHaveReceived('terminate')
+        ->once();
 });

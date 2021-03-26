@@ -21,6 +21,7 @@
         "myclabs/php-enum": "^1.8"
     },
     "require-dev": {
+        "mockery/mockery": "^1.4",
         "orchestra/testbench": "^6.13",
         "pestphp/pest": "^1.0",
         "phpunit/phpunit": "^9.3"
