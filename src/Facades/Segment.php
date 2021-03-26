@@ -15,6 +15,7 @@ use Octohook\LaravelSegment\SegmentService;
  * @method static void identify(?array $identifyData = null)
  * @method static PendingUserSegment forUser(CanBeIdentifiedForSegment $user)
  * @method static void push(CanBeSentToSegment $segment)
+ * @method static void terminate()
  */
 class Segment extends Facade
 {
