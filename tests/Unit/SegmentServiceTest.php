@@ -124,3 +124,152 @@ it('terminates the segment service on app terminate', function () {
     $service->shouldHaveReceived('terminate')
         ->once();
 });
+
+it('can track a user using the track method for a given user', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the track method
+    Segment::forUser($user)->track('Something Happened', [
+        'name' => 'special',
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader("Content-Type", "application/json")
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->url() === "https://api.segment.io/v1/batch"
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                "type" => "track",
+                "userId" => "abcd",
+                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                "properties" => [
+                    "name" => "special"
+                ],
+                "event" => "Something Happened"
+            ]);
+    });
+});
+
+it('can identify a user using the identify method for a given user', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the track method
+    Segment::forUser($user)->identify([
+        "has_confirmed_something" => true,
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader("Content-Type", "application/json")
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->url() === "https://api.segment.io/v1/batch"
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                "type" => "identify",
+                "userId" => "abcd",
+                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                "traits" => [
+                    "has_confirmed_something" => true,
+                ]
+            ]);
+    });
+});
+
+it('defers tracking events until terminate is called when deferred is enabled', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are not deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // And we call the track method
+    Segment::forUser($user)->track('Something Happened', [
+        'name' => 'special',
+    ]);
+    Segment::forUser($user)->identify([
+        'seen_email' => true,
+    ]);
+
+    // And we haven't sent anything yet
+    Http::assertNothingSent();
+
+    // When we call terminate
+    Segment::terminate();
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader("Content-Type", "application/json")
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->url() === "https://api.segment.io/v1/batch"
+            && $request['context'] === []
+            && count($request['batch']) === 2
+            && arraysMatch($request['batch'][0], [
+                "type" => "track",
+                "userId" => "abcd",
+                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                "properties" => [
+                    "name" => "special"
+                ],
+                "event" => "Something Happened"
+            ])
+            && arraysMatch($request['batch'][1], [
+                "type" => "identify",
+                "userId" => "abcd",
+                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                "traits" => [
+                    "seen_email" => true,
+                ]
+            ]);
+    });
+});
+
+it('does not sent tracking events when not enabled', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have disabled the integration
+    setEnabled(false);
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the track method
+    Segment::forUser($user)->track('Something Happened', [
+        'name' => 'special',
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertNothingSent();
+});
