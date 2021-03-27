@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @mixin Model
  */
-trait HasSegmentIdentityById
+trait HasSegmentIdentityByKey
 {
     public function getSegmentIdentifier(): string
     {
