@@ -154,7 +154,7 @@ class SegmentService
 
     protected function getWriteKey(): string
     {
-        return $this->config['write_key'] ?? '';
+        return "{$this->config['write_key']}:" ?? '';
     }
 
     protected function shouldDefer(): bool
