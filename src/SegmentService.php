@@ -103,13 +103,20 @@ class SegmentService
 
     protected function getDataFromPayload(SegmentPayload $payload): array
     {
+        // Initial data.
         $data = [
             'type' => $payload->getType()->getValue(),
             'userId' => $payload->getUserId(),
             'timestamp' => $payload->getTimestamp()->format('Y-m-d\TH:i:s\Z'),
-            $payload->getDataKey() => $payload->getData(),
         ];
 
+        // This is important, Segment will not handle empty
+        // data arrays as expected and will drop the event.
+        if (!empty($payload->getData())) {
+            $data[$payload->getDataKey()] = $payload->getData();
+        }
+
+        // If it's a tracking call we need an event name!
         if ($payload->getType()->equals(SegmentPayloadType::TRACK())) {
             $data['event'] = $payload->getEvent();
         }

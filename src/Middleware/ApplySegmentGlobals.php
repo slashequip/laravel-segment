@@ -27,16 +27,22 @@ class ApplySegmentGlobals
     private function getContext(Request $request): array
     {
         return collect([
-            "ip" => $request->ip(),
-            "locale" => $request->getPreferredLanguage(),
-            "userAgent" => $request->userAgent(),
+                "ip" => $request->ip(),
+                "locale" => $request->getPreferredLanguage(),
+                "userAgent" => $request->userAgent(),
 
-            /**
-             * This is a solid default, generally backend calls
-             * to Segment are not responsible to determining
-             * whether or a not a user is active or not.
-             */
-            "active" => false,
-        ])->filter()->all();
+                /**
+                 * This is a solid default, generally backend calls
+                 * to Segment are not responsible to determining
+                 * whether or a not a user is active or not.
+                 */
+                "active" => false,
+            ])
+            ->filter(function ($context) {
+                // Top level null values in the context
+                // are meaningless at this point.
+                return !is_null($context);
+            })
+            ->all();
     }
 }
