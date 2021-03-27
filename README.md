@@ -51,6 +51,11 @@ return [
 ];
 ```
 
+## Setting your write key
+
+Your write key is the API key given to you by Segment which can be found under your PHP source settings; 
+`https://app.segment.com/{your-workspace-name}/sources/{your-source-name}/settings/keys` in the Segment UI.
+
 ## What is a Segment User
 
 When we talk about a 'user' in the context of this package we mean any object that
@@ -150,6 +155,19 @@ Segment::identify([
     'latest_subscription_amount' => '$24.60',
 ]);
 ```
+
+## Misc
+
+### Deferring
+When you start to fire many events in your application, even 2-3 per request it can be hyper-beneficial to
+turn on deferring (see config). When deferring is enabled, the service will store all of your tracking events triggered
+through-out the request or process and then send them in batch after your application has responded to your user. This
+happens during the Laravel termination.
+
+### Safe mode
+By default safe-mode is turned on. When safe-mode is active it will swallow any exceptions thrown when making the HTTP
+request to Segmenta and report them automatically to the exception handler, allow your app to continue running. When
+disabled then the exception will be thrown.
 
 ## Testing
 
