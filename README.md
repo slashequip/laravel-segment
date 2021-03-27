@@ -51,26 +51,71 @@ return [
 ];
 ```
 
-## Identifying Segment Users
+## What is a Segment User
 
-When we talk about a 'user' we mean an instance of `Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment`
-the package comes with a trait (and the interface) you can attach to your default User model;
+When we talk about a 'user' in the context of this package we mean any object that
+implements the `Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment` contract
+the package comes with a trait (and the interface) you can attach to your default
+User model;
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Octohook\LaravelSegment\Traits\HasSegmentIdentityById;
+use Octohook\LaravelSegment\Traits\HasSegmentIdentityByKey;
 use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 
 class User extends Model implements CanBeIdentifiedForSegment
 {
-    use HasSegmentIdentityById;
+    use HasSegmentIdentityByKey;
 }
 ```
 
 Using this trait will automagically use your users' primary key as the identifier
-that is sent to Segment. Alternatively you can implement your own instance of the
+that is sent to Segment. Alternatively, you can implement your own instance of the
 `public function getSegmentIdentifier(): string;` method on your User model and not
 use the trait.
+
+### Globally identifying users
+
+If you are sending Segment events in multiple places through your application and
+through-out a request it might make sense to globally identify a user to make it
+more convenient when making tracking calls.
+
+```php
+use Octohook\LaravelSegment\Facades\Segment;
+
+Segment::setGlobalUser($user);
+```
+
+### Globally setting context
+
+Segment allows you to send (context)[https://segment.com/docs/connections/spec/common/#context]
+with your tracking events too, you can set a global context that applies to all tracking events.
+
+```php
+use Octohook\LaravelSegment\Facades\Segment;
+
+Segment::setGlobalContext([
+    'ip' => '127.0.0.1',
+    'locale' => 'en-US',
+    'screen' => [
+        'height' => 1080,
+        'width' => 1920,
+    ],
+]);
+```
+
+### Here have some convenience
+
+Laravel Segment ships with a middleware that you can apply in your HTTP Kernal that will handle
+the setting of the global user and some sensible global context too. It should be simple to extend
+this middleware and adjust for your needs if you want to add to the default context provided.
+
+```php
+    'api' => [
+        // ... other middleware
+        Octohook\LaravelSegment\Middleware\ApplySegmentGlobals::class
+    ],
+```
 
 ## Usage
 
@@ -79,6 +124,12 @@ use the trait.
 use Octohook\LaravelSegment\Facades\Segment;
 
 Segment::forUser($user)->track('User Signed Up', [
+    'source' => 'Product Hunt',
+]);
+
+// If you have set a global user you can
+// use the simpler provided syntax.
+Segment::track('User Signed Up', [
     'source' => 'Product Hunt',
 ]);
 ```
@@ -91,12 +142,19 @@ Segment::forUser($user)->identify([
     'last_logged_in' => '2021-03-24 20:05:30',
     'latest_subscription_amount' => '$24.60',
 ]);
+
+// If you have set a global user you can
+// use the simpler provided syntax.
+Segment::identify([
+    'last_logged_in' => '2021-03-24 20:05:30',
+    'latest_subscription_amount' => '$24.60',
+]);
 ```
 
 ## Testing
 
 ```bash
-composer test
+./vendor/bin/pest
 ```
 
 ## Changelog
@@ -113,7 +171,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Octohook](https://github.com/Octohook)
+- [Octohook](https://github.com/octohk)
 - [All Contributors](../../contributors)
 
 ## License
