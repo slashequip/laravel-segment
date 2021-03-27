@@ -1,11 +1,11 @@
 {
-    "name": "octohook/laravel-segment",
+    "name": "octohk/laravel-segment",
     "description": "laravel-segment",
     "keywords": [
         "octohook",
         "laravel-segment"
     ],
-    "homepage": "https://github.com/octohook/laravel-segment",
+    "homepage": "https://github.com/octohk/laravel-segment",
     "license": "MIT",
     "authors": [
         {
