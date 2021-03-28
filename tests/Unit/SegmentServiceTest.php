@@ -50,9 +50,9 @@ it('can track a user using the track method with global user and context', funct
                 "userId" => "abcd",
                 "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
                 "properties" => [
-                    "name" => "special"
+                    "name" => "special",
                 ],
-                "event" => "Something Happened"
+                "event" => "Something Happened",
             ]);
     });
 });
@@ -96,7 +96,7 @@ it('can identify a user using the identify method with global user and context',
                 "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
                 "traits" => [
                     "has_confirmed_something" => true,
-                ]
+                ],
             ]);
     });
 });
@@ -155,9 +155,9 @@ it('can track a user using the track method for a given user', function () {
                 "userId" => "abcd",
                 "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
                 "properties" => [
-                    "name" => "special"
+                    "name" => "special",
                 ],
-                "event" => "Something Happened"
+                "event" => "Something Happened",
             ]);
     });
 });
@@ -193,7 +193,7 @@ it('can identify a user using the identify method for a given user', function ()
                 "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
                 "traits" => [
                     "has_confirmed_something" => true,
-                ]
+                ],
             ]);
     });
 });
@@ -237,9 +237,9 @@ it('defers tracking events until terminate is called when deferred is enabled', 
                 "userId" => "abcd",
                 "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
                 "properties" => [
-                    "name" => "special"
+                    "name" => "special",
                 ],
-                "event" => "Something Happened"
+                "event" => "Something Happened",
             ])
             && arraysMatch($request['batch'][1], [
                 "type" => "identify",
@@ -247,7 +247,7 @@ it('defers tracking events until terminate is called when deferred is enabled', 
                 "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
                 "traits" => [
                     "seen_email" => true,
-                ]
+                ],
             ]);
     });
 });

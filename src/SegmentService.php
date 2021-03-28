@@ -2,7 +2,6 @@
 
 namespace Octohook\LaravelSegment;
 
-use DateTime;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
@@ -23,7 +22,8 @@ class SegmentService
 
     public function __construct(
         private array $config
-    ) {}
+    ) {
+    }
 
     public function setGlobalUser(CanBeIdentifiedForSegment $globalUser): void
     {
@@ -72,6 +72,7 @@ class SegmentService
 
         if (! $this->isEnabled()) {
             $this->clean();
+
             return;
         }
 
@@ -112,7 +113,7 @@ class SegmentService
 
         // This is important, Segment will not handle empty
         // data arrays as expected and will drop the event.
-        if (!empty($payload->getData())) {
+        if (! empty($payload->getData())) {
             $data[$payload->getDataKey()] = $payload->getData();
         }
 
@@ -134,6 +135,7 @@ class SegmentService
             // Cleanup and re-throw, we stop here.
             if (! $this->inSafeMode()) {
                 $this->clean();
+
                 throw $e;
             }
 

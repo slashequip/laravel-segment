@@ -13,7 +13,8 @@ class SimpleSegmentEvent implements CanBeSentToSegment
         private CanBeIdentifiedForSegment $user,
         private string $event,
         private ?array $eventData
-    ) {}
+    ) {
+    }
 
     public function toSegment(): SegmentPayload
     {

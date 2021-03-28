@@ -41,7 +41,7 @@ class ApplySegmentGlobals
             ->filter(function ($context) {
                 // Top level null values in the context
                 // are meaningless at this point.
-                return !is_null($context);
+                return ! is_null($context);
             })
             ->all();
     }

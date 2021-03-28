@@ -8,7 +8,8 @@ class SegmentTestUser implements CanBeIdentifiedForSegment
 {
     public function __construct(
         private string $id
-    ) {}
+    ) {
+    }
 
     public function getSegmentIdentifier(): string
     {

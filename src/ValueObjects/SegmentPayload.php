@@ -20,7 +20,8 @@ class SegmentPayload
         protected CanBeIdentifiedForSegment $user,
         protected SegmentPayloadType $type,
         protected ?array $data
-    ) {}
+    ) {
+    }
 
     public function getUser(): CanBeIdentifiedForSegment
     {

@@ -2,7 +2,6 @@
 
 namespace Octohook\LaravelSegment;
 
-use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
 use Octohook\LaravelSegment\Facades\Segment;
@@ -41,7 +40,8 @@ class LaravelSegmentServiceProvider extends ServiceProvider
     {
         // Register config.
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/segment.php', 'segment'
+            __DIR__ . '/../config/segment.php',
+            'segment'
         );
 
         // Register the Segment service.
