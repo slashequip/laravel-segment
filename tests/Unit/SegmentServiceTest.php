@@ -41,7 +41,7 @@ it('can track a user using the track method with global user and context', funct
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
         return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
             && $request->url() === "https://api.segment.io/v1/batch"
             && $request['context'] === ['ip' => '127.0.0.1']
             && count($request['batch']) === 1
@@ -86,7 +86,7 @@ it('can identify a user using the identify method with global user and context',
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
         return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
             && $request->url() === "https://api.segment.io/v1/batch"
             && $request['context'] === ['ip' => '127.0.0.1']
             && count($request['batch']) === 1
@@ -146,7 +146,7 @@ it('can track a user using the track method for a given user', function () {
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
         return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
             && $request->url() === "https://api.segment.io/v1/batch"
             && $request['context'] === []
             && count($request['batch']) === 1
@@ -183,7 +183,7 @@ it('can identify a user using the identify method for a given user', function ()
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
         return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
             && $request->url() === "https://api.segment.io/v1/batch"
             && $request['context'] === []
             && count($request['batch']) === 1
@@ -228,7 +228,7 @@ it('defers tracking events until terminate is called when deferred is enabled', 
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
         return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234'))
+            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
             && $request->url() === "https://api.segment.io/v1/batch"
             && $request['context'] === []
             && count($request['batch']) === 2
