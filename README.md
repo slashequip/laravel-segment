@@ -15,7 +15,7 @@ Laravel Segment is an opinionated, approach to integrating Segment into your Lar
 You can install the package via composer:
 
 ```bash
-composer require octohook/laravel-segment
+composer require octohk/laravel-segment
 ```
 
 
