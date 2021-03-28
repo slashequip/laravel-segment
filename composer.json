@@ -18,7 +18,8 @@
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0",
         "illuminate/contracts": "^8.0",
-        "myclabs/php-enum": "^1.8"
+        "myclabs/php-enum": "^1.8",
+        "vimeo/psalm": "^4.6"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
@@ -37,6 +38,7 @@
         }
     },
     "scripts": {
+        "psalm": "vendor/bin/psalm",
         "test": "vendor/bin/pest"
     },
     "config": {

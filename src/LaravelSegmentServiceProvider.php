@@ -20,7 +20,11 @@ class LaravelSegmentServiceProvider extends ServiceProvider
             __DIR__.'/../config/segment.php' => config_path('segment.php'),
         ]);
 
-        // Send deferred tracking events to Segment after the response has been sent.
+        /**
+         * Send deferred tracking events to Segment after the response has been sent.
+         *
+         * @psalm-suppress UndefinedInterfaceMethod
+         */
         $this->app->terminating(function () {
             Segment::terminate();
         });

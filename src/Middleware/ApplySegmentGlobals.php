@@ -5,6 +5,7 @@ namespace Octohook\LaravelSegment\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use Octohook\LaravelSegment\Facades\Segment;
 
 class ApplySegmentGlobals
@@ -15,6 +16,7 @@ class ApplySegmentGlobals
          * Set the current logged in User as global.
          */
         if ($user = Auth::guard($guard)->user()) {
+            /** @var CanBeIdentifiedForSegment $user */
             Segment::setGlobalUser($user);
         }
 

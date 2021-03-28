@@ -76,6 +76,6 @@ class SegmentPayload
 
     public function getUserId(): string
     {
-        return (string) $this->user->getSegmentIdentifier();
+        return $this->user->getSegmentIdentifier();
     }
 }
