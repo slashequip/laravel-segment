@@ -1,6 +1,6 @@
 {
     "name": "octohk/laravel-segment",
-    "description": "laravel-segment",
+    "description": "Laravel Segment is an opinionated, approach to integrating Segment into your Laravel application.",
     "keywords": [
         "octohook",
         "laravel-segment"
