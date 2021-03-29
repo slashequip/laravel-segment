@@ -2,8 +2,6 @@
 
 namespace Octohook\LaravelSegment\Traits;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * @mixin Model
  */
