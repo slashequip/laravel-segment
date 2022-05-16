@@ -1,12 +1,12 @@
 <?php
 
-namespace Octohook\LaravelSegment\ValueObjects;
+namespace SlashEquip\LaravelSegment\ValueObjects;
 
 use DateTime;
 use DateTimeZone;
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
-use Octohook\LaravelSegment\Enums\SegmentPayloadType;
-use Octohook\LaravelSegment\Exceptions\UnsupportedSegmentPayloadTypeException;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
+use SlashEquip\LaravelSegment\Exceptions\UnsupportedSegmentPayloadTypeException;
 
 class SegmentPayload
 {

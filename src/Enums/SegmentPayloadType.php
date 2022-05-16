@@ -1,6 +1,6 @@
 <?php
 
-namespace Octohook\LaravelSegment\Enums;
+namespace SlashEquip\LaravelSegment\Enums;
 
 use MyCLabs\Enum\Enum;
 

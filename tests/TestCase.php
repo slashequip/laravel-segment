@@ -1,8 +1,8 @@
 <?php
 
-namespace Octohook\LaravelSegment\Tests;
+namespace SlashEquip\LaravelSegment\Tests;
 
-use Octohook\LaravelSegment\LaravelSegmentServiceProvider;
+use SlashEquip\LaravelSegment\LaravelSegmentServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

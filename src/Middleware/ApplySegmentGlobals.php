@@ -1,12 +1,12 @@
 <?php
 
-namespace Octohook\LaravelSegment\Middleware;
+namespace SlashEquip\LaravelSegment\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
-use Octohook\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Facades\Segment;
 
 class ApplySegmentGlobals
 {

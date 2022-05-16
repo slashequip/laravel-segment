@@ -4,9 +4,9 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Http;
-use Octohook\LaravelSegment\Facades\Segment;
-use Octohook\LaravelSegment\SegmentService;
-use Octohook\LaravelSegment\Tests\Stubs\SegmentTestUser;
+use SlashEquip\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\SegmentService;
+use SlashEquip\LaravelSegment\Tests\Stubs\SegmentTestUser;
 
 it('can be resolved from the container', function () {
     $this->assertInstanceOf(SegmentService::class, app(SegmentService::class));

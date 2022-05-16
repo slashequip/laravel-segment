@@ -1,11 +1,11 @@
 {
-    "name": "octohk/laravel-segment",
+    "name": "slashequip/laravel-segment",
     "description": "Laravel Segment is an opinionated, approach to integrating Segment into your Laravel application.",
     "keywords": [
         "octohook",
         "laravel-segment"
     ],
-    "homepage": "https://github.com/octohk/laravel-segment",
+    "homepage": "https://github.com/slashequip/laravel-segment",
     "license": "MIT",
     "authors": [
         {
@@ -30,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Octohook\\LaravelSegment\\": "src"
+            "SlashEquip\\LaravelSegment\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Octohook\\LaravelSegment\\Tests\\": "tests"
+            "SlashEquip\\LaravelSegment\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -43,15 +43,18 @@
         "test": "vendor/bin/pest"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Octohook\\LaravelSegment\\LaravelSegmentServiceProvider"
+                "SlashEquip\\LaravelSegment\\LaravelSegmentServiceProvider"
             ],
             "aliases": {
-                "Segment": "Octohook\\LaravelSegment\\Facades\\Segment"
+                "Segment": "SlashEquip\\LaravelSegment\\Facades\\Segment"
             }
         }
     },

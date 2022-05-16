@@ -1,10 +1,10 @@
 <?php
 
-namespace Octohook\LaravelSegment;
+namespace SlashEquip\LaravelSegment;
 
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
-use Octohook\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\Facades\Segment;
 
 class LaravelSegmentServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Octohook\LaravelSegment\Contracts;
+namespace SlashEquip\LaravelSegment\Contracts;
 
 interface CanBeIdentifiedForSegment
 {

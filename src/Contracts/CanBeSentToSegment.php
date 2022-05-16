@@ -1,8 +1,8 @@
 <?php
 
-namespace Octohook\LaravelSegment\Contracts;
+namespace SlashEquip\LaravelSegment\Contracts;
 
-use Octohook\LaravelSegment\ValueObjects\SegmentPayload;
+use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 
 interface CanBeSentToSegment
 {

@@ -11,7 +11,7 @@
 |
 */
 
-use Octohook\LaravelSegment\Tests\TestCase;
+use SlashEquip\LaravelSegment\Tests\TestCase;
 
 uses(TestCase::class)->in('Unit');
 

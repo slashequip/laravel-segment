@@ -1,11 +1,11 @@
 <?php
 
-namespace Octohook\LaravelSegment;
+namespace SlashEquip\LaravelSegment;
 
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
-use Octohook\LaravelSegment\Contracts\CanBeSentToSegment;
-use Octohook\LaravelSegment\Enums\SegmentPayloadType;
-use Octohook\LaravelSegment\ValueObjects\SegmentPayload;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
+use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
+use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 
 class SimpleSegmentIdentify implements CanBeSentToSegment
 {

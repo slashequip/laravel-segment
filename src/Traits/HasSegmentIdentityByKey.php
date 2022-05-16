@@ -1,6 +1,6 @@
 <?php
 
-namespace Octohook\LaravelSegment\Traits;
+namespace SlashEquip\LaravelSegment\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 

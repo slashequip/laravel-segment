@@ -1,8 +1,8 @@
 <?php
 
-namespace Octohook\LaravelSegment;
+namespace SlashEquip\LaravelSegment;
 
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 
 class PendingUserSegment
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Octohook\LaravelSegment\Tests\Stubs;
+namespace SlashEquip\LaravelSegment\Tests\Stubs;
 
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 
 class SegmentTestUser implements CanBeIdentifiedForSegment
 {

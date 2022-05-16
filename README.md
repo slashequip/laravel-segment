@@ -1,11 +1,11 @@
 # Laravel Segment
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/octohk/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/octohook/laravel-segment)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/octohk/laravel-segment/run-tests?label=tests)](https://github.com/octohook/laravel-segment/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/octohk/laravel-segment/Check%20&%20fix%20styling?label=code%20style)](https://github.com/octohook/laravel-segment/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/octohk/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/octohook/laravel-segment)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/octohook/laravel-segment)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/slashequip/laravel-segment/run-tests?label=tests)](https://github.com/octohook/laravel-segment/actions?query=workflow%3ATests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/slashequip/laravel-segment/Check%20&%20fix%20styling?label=code%20style)](https://github.com/octohook/laravel-segment/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/octohook/laravel-segment)
 
-![Laravel Segment Logo Banner](https://github.com/octohk/laravel-segment/blob/main/laravel-segment-banner.svg?raw=true)
+![Laravel Segment Logo Banner](https://github.com/slashequip/laravel-segment/blob/main/laravel-segment-banner.svg?raw=true)
 
 Laravel Segment is an opinionated, approach to integrating Segment into your Laravel application.
 
@@ -15,13 +15,13 @@ Laravel Segment is an opinionated, approach to integrating Segment into your Lar
 You can install the package via composer:
 
 ```bash
-composer require octohk/laravel-segment
+composer require slashequip/laravel-segment
 ```
 
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Octohook\LaravelSegment\LaravelSegmentServiceProvider"
+php artisan vendor:publish --provider="SlashEquip\LaravelSegment\LaravelSegmentServiceProvider"
 ```
 
 This is the contents of the published config file, which should be located at `config/segment.php`:
@@ -60,14 +60,14 @@ Your write key is the API key given to you by Segment which can be found under y
 ## What is a Segment User
 
 When we talk about a 'user' in the context of this package we mean any object that
-implements the `Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment` contract
+implements the `SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment` contract
 the package comes with a trait (and the interface) you can attach to your default
 User model;
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Octohook\LaravelSegment\Traits\HasSegmentIdentityByKey;
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Traits\HasSegmentIdentityByKey;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 
 class User extends Model implements CanBeIdentifiedForSegment
 {
@@ -87,7 +87,7 @@ through-out a request it might make sense to globally identify a user to make it
 more convenient when making tracking calls.
 
 ```php
-use Octohook\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\Facades\Segment;
 
 Segment::setGlobalUser($user);
 ```
@@ -98,7 +98,7 @@ Segment allows you to send (context)[https://segment.com/docs/connections/spec/c
 with your tracking events too, you can set a global context that applies to all tracking events.
 
 ```php
-use Octohook\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\Facades\Segment;
 
 Segment::setGlobalContext([
     'ip' => '127.0.0.1',
@@ -119,7 +119,7 @@ this middleware and adjust for your needs if you want to add to the default cont
 ```php
     'api' => [
         // ... other middleware
-        Octohook\LaravelSegment\Middleware\ApplySegmentGlobals::class
+        SlashEquip\LaravelSegment\Middleware\ApplySegmentGlobals::class
     ],
 ```
 
@@ -127,7 +127,7 @@ this middleware and adjust for your needs if you want to add to the default cont
 
 ### For tracking events
 ```php
-use Octohook\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\Facades\Segment;
 
 Segment::forUser($user)->track('User Signed Up', [
     'source' => 'Product Hunt',
@@ -142,7 +142,7 @@ Segment::track('User Signed Up', [
 
 ### For identifying users
 ```php
-use Octohook\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\Facades\Segment;
 
 Segment::forUser($user)->identify([
     'last_logged_in' => '2021-03-24 20:05:30',
@@ -190,7 +190,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Octohook](https://github.com/octohk)
+- [SlashEquip](https://github.com/slashequip)
 - [All Contributors](../../contributors)
 
 ## License

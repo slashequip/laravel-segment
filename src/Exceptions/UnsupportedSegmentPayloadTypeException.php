@@ -1,6 +1,6 @@
 <?php
 
-namespace Octohook\LaravelSegment\Exceptions;
+namespace SlashEquip\LaravelSegment\Exceptions;
 
 use RuntimeException;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Octohook\LaravelSegment\Facades;
+namespace SlashEquip\LaravelSegment\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Octohook\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
-use Octohook\LaravelSegment\Contracts\CanBeSentToSegment;
-use Octohook\LaravelSegment\PendingUserSegment;
-use Octohook\LaravelSegment\SegmentService;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
+use SlashEquip\LaravelSegment\PendingUserSegment;
+use SlashEquip\LaravelSegment\SegmentService;
 
 /**
  * @method static void setGlobalUser(CanBeIdentifiedForSegment $globalUser)
