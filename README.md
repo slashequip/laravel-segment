@@ -1,9 +1,9 @@
 # Laravel Segment
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/octohook/laravel-segment)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/slashequip/laravel-segment/run-tests?label=tests)](https://github.com/octohook/laravel-segment/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/slashequip/laravel-segment/Check%20&%20fix%20styling?label=code%20style)](https://github.com/octohook/laravel-segment/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/octohook/laravel-segment)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/slashequip/laravel-segment)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/slashequip/laravel-segment/run-tests?label=tests)](https://github.com/slashequip/laravel-segment/actions?query=workflow%3ATests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/slashequip/laravel-segment/Check%20&%20fix%20styling?label=code%20style)](https://github.com/slashequip/laravel-segment/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/slashequip/laravel-segment)
 
 ![Laravel Segment Logo Banner](https://github.com/slashequip/laravel-segment/blob/main/laravel-segment-banner.svg?raw=true)
 
