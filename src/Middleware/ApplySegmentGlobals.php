@@ -24,6 +24,8 @@ class ApplySegmentGlobals
          * Build some nice default context based on the current request.
          */
         Segment::setGlobalContext($this->getContext($request));
+        
+        return $next($request);
     }
 
     private function getContext(Request $request): array
