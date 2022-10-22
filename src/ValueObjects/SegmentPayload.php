@@ -15,7 +15,7 @@ class SegmentPayload
     protected ?DateTime $timestamp = null;
 
     /**
-     * @param null|array<int, mixed> $data
+     * @param  null|array<int, mixed>  $data
      */
     public function __construct(
         protected CanBeIdentifiedForSegment $user,

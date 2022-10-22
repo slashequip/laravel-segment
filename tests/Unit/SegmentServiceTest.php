@@ -4,10 +4,10 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Http;
+use function PHPUnit\Framework\assertInstanceOf;
 use SlashEquip\LaravelSegment\Facades\Segment;
 use SlashEquip\LaravelSegment\SegmentService;
 use SlashEquip\LaravelSegment\Tests\Stubs\SegmentTestUser;
-use function PHPUnit\Framework\assertInstanceOf;
 
 it('can be resolved from the container', function () {
     assertInstanceOf(SegmentService::class, app(SegmentService::class));

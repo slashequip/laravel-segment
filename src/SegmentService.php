@@ -157,6 +157,7 @@ class SegmentService
     protected function getWriteKey(): string
     {
         $key = $this->config['write_key'] ?? '';
+
         return "$key:";
     }
 
