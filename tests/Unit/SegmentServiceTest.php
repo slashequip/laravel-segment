@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Http;
 use SlashEquip\LaravelSegment\Facades\Segment;
 use SlashEquip\LaravelSegment\SegmentService;
 use SlashEquip\LaravelSegment\Tests\Stubs\SegmentTestUser;
+use function PHPUnit\Framework\assertInstanceOf;
 
 it('can be resolved from the container', function () {
-    $this->assertInstanceOf(SegmentService::class, app(SegmentService::class));
+    assertInstanceOf(SegmentService::class, app(SegmentService::class));
 });
 
 it('can track a user using the track method with global user and context', function () {
@@ -118,7 +119,7 @@ it('terminates the segment service on app terminate', function () {
     $service = $this->spy(SegmentService::class);
 
     // When we terminate the app
-    $this->app->terminate();
+    app()->terminate();
 
     // Then we have called the terminate method
     $service->shouldHaveReceived('terminate')

@@ -1,14 +1,13 @@
-name: Psalm
+name: Static Analysis
 
 on:
   push:
     paths:
       - '**.php'
-      - 'psalm.xml.dist'
 
 jobs:
-  psalm:
-    name: psalm
+  phpstan:
+    name: phpstan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,7 +15,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.1'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
 
@@ -30,4 +29,4 @@ jobs:
         run: composer install -n --prefer-dist
 
       - name: Run psalm
-        run: ./vendor/bin/psalm --output-format=github
+        run: vendor/bin/phpstan analyse --output-format=github

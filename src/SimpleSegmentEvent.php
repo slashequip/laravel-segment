@@ -20,7 +20,7 @@ class SimpleSegmentEvent implements CanBeSentToSegment
     {
         $payload = new SegmentPayload(
             $this->user,
-            SegmentPayloadType::TRACK(),
+            SegmentPayloadType::TRACK,
             $this->eventData
         );
 

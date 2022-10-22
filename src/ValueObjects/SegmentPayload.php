@@ -10,12 +10,13 @@ use SlashEquip\LaravelSegment\Exceptions\UnsupportedSegmentPayloadTypeException;
 
 class SegmentPayload
 {
-    /** @var string */
-    protected $event;
+    protected ?string $event = null;
 
-    /** @var DateTime */
-    protected $timestamp;
+    protected ?DateTime $timestamp = null;
 
+    /**
+     * @param null|array<int, mixed> $data
+     */
     public function __construct(
         protected CanBeIdentifiedForSegment $user,
         protected SegmentPayloadType $type,
@@ -33,12 +34,15 @@ class SegmentPayload
         return $this->type;
     }
 
+    /**
+     * @return null|array<int, mixed>
+     */
     public function getData(): ?array
     {
         return $this->data;
     }
 
-    public function getEvent(): string
+    public function getEvent(): ?string
     {
         return $this->event;
     }
@@ -63,11 +67,11 @@ class SegmentPayload
 
     public function getDataKey(): string
     {
-        if ($this->type->equals(SegmentPayloadType::TRACK())) {
+        if ($this->type === SegmentPayloadType::TRACK) {
             return 'properties';
         }
 
-        if ($this->type->equals(SegmentPayloadType::IDENTIFY())) {
+        if ($this->type === SegmentPayloadType::IDENTIFY) {
             return 'traits';
         }
 

@@ -14,7 +14,7 @@ class SegmentService
 {
     const BATCH_URL = 'https://api.segment.io/v1/batch';
 
-    private CanBeIdentifiedForSegment $globalUser;
+    private ?CanBeIdentifiedForSegment $globalUser = null;
 
     private array $globalContext = [];
 
@@ -106,7 +106,7 @@ class SegmentService
     {
         // Initial data.
         $data = [
-            'type' => $payload->getType()->getValue(),
+            'type' => $payload->getType()->value,
             'userId' => $payload->getUserId(),
             'timestamp' => $payload->getTimestamp()->format('Y-m-d\TH:i:s\Z'),
         ];
@@ -118,7 +118,7 @@ class SegmentService
         }
 
         // If it's a tracking call we need an event name!
-        if ($payload->getType()->equals(SegmentPayloadType::TRACK())) {
+        if ($payload->getType() === SegmentPayloadType::TRACK) {
             $data['event'] = $payload->getEvent();
         }
 
@@ -156,7 +156,8 @@ class SegmentService
 
     protected function getWriteKey(): string
     {
-        return "{$this->config['write_key']}:" ?? '';
+        $key = $this->config['write_key'] ?? '';
+        return "$key:";
     }
 
     protected function shouldDefer(): bool
