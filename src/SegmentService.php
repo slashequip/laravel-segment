@@ -12,7 +12,7 @@ use Throwable;
 
 class SegmentService
 {
-    const BATCH_URL = "https://api.segment.io/v1/batch";
+    const BATCH_URL = 'https://api.segment.io/v1/batch';
 
     private CanBeIdentifiedForSegment $globalUser;
 
@@ -78,12 +78,12 @@ class SegmentService
 
         // Send the batch request.
         $response = Http::withHeaders([
-                "Authorization" => "Bearer " . base64_encode($this->getWriteKey()),
-                "Content-Type" => "application/json",
-            ])
+            'Authorization' => 'Bearer '.base64_encode($this->getWriteKey()),
+            'Content-Type' => 'application/json',
+        ])
             ->post(self::BATCH_URL, [
-                "batch" => $this->getBatchData(),
-                "context" => $this->globalContext,
+                'batch' => $this->getBatchData(),
+                'context' => $this->globalContext,
             ]);
 
         // Do error handling.

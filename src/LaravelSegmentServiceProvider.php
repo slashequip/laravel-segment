@@ -44,7 +44,7 @@ class LaravelSegmentServiceProvider extends ServiceProvider
     {
         // Register config.
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/segment.php',
+            __DIR__.'/../config/segment.php',
             'segment'
         );
 

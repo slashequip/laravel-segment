@@ -40,5 +40,5 @@ function arraysMatch(array $arrayOne, array $arrayTwo)
     array_multisort($arrayOne);
     array_multisort($arrayTwo);
 
-    return (serialize($arrayOne) === serialize($arrayTwo));
+    return serialize($arrayOne) === serialize($arrayTwo);
 }
