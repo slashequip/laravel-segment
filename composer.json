@@ -16,9 +16,8 @@
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0",
-        "illuminate/contracts": "^8.0|^9.0",
+        "illuminate/contracts": "^8.0|^9.0|^10.0",
         "myclabs/php-enum": "^1.8"
-
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
