@@ -12,7 +12,8 @@ class SimpleSegmentEvent implements CanBeSentToSegment
     public function __construct(
         private CanBeIdentifiedForSegment $user,
         private string $event,
-        private ?array $eventData
+        private ?array $eventData,
+        private ?array $context = null
     ) {
     }
 
@@ -21,7 +22,8 @@ class SimpleSegmentEvent implements CanBeSentToSegment
         $payload = new SegmentPayload(
             $this->user,
             SegmentPayloadType::TRACK(),
-            $this->eventData
+            $this->eventData,
+            $this->context
         );
 
         $payload->setEvent($this->event);

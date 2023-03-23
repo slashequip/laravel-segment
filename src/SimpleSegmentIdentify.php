@@ -11,7 +11,8 @@ class SimpleSegmentIdentify implements CanBeSentToSegment
 {
     public function __construct(
         private CanBeIdentifiedForSegment $user,
-        private ?array $identifyData = null
+        private ?array $identifyData = null,
+        private ?array $context = null
     ) {
     }
 
@@ -20,7 +21,8 @@ class SimpleSegmentIdentify implements CanBeSentToSegment
         return new SegmentPayload(
             $this->user,
             SegmentPayloadType::IDENTIFY(),
-            $this->identifyData
+            $this->identifyData,
+            $this->context
         );
     }
 }
