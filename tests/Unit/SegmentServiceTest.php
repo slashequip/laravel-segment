@@ -36,6 +36,10 @@ it('can track a user using the track method with global user and context', funct
     // When we call the track method
     Segment::track('Something Happened', [
         'name' => 'special',
+    ], [
+        'page' => [
+            'title' => 'Home',
+        ]
     ]);
 
     // Then we have made the calls to Segment
@@ -53,6 +57,11 @@ it('can track a user using the track method with global user and context', funct
                     "name" => "special",
                 ],
                 "event" => "Something Happened",
+                "context" => [
+                    "page" => [
+                        "title" => "Home",
+                    ]
+                ]
             ]);
     });
 });
@@ -81,6 +90,10 @@ it('can identify a user using the identify method with global user and context',
     // When we call the track method
     Segment::identify([
         "has_confirmed_something" => true,
+    ], [
+        'page' => [
+            'title' => 'Home',
+        ]
     ]);
 
     // Then we have made the calls to Segment
@@ -97,6 +110,11 @@ it('can identify a user using the identify method with global user and context',
                 "traits" => [
                     "has_confirmed_something" => true,
                 ],
+                "context" => [
+                    "page" => [
+                        "title" => "Home",
+                    ]
+                ]
             ]);
     });
 });
@@ -141,6 +159,10 @@ it('can track a user using the track method for a given user', function () {
     // When we call the track method
     Segment::forUser($user)->track('Something Happened', [
         'name' => 'special',
+    ], [
+        'page' => [
+            'title' => 'Home',
+        ]
     ]);
 
     // Then we have made the calls to Segment
@@ -158,6 +180,11 @@ it('can track a user using the track method for a given user', function () {
                     "name" => "special",
                 ],
                 "event" => "Something Happened",
+                "context" => [
+                    "page" => [
+                        "title" => "Home",
+                    ]
+                ]
             ]);
     });
 });
@@ -178,6 +205,10 @@ it('can identify a user using the identify method for a given user', function ()
     // When we call the track method
     Segment::forUser($user)->identify([
         "has_confirmed_something" => true,
+    ], [
+        'page' => [
+            'title' => 'Home',
+        ]
     ]);
 
     // Then we have made the calls to Segment
@@ -194,6 +225,11 @@ it('can identify a user using the identify method for a given user', function ()
                 "traits" => [
                     "has_confirmed_something" => true,
                 ],
+                "context" => [
+                    "page" => [
+                        "title" => "Home",
+                    ]
+                ]
             ]);
     });
 });
