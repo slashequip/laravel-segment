@@ -110,6 +110,35 @@ Segment::setGlobalContext([
 ]);
 ```
 
+### Setting context on a per event basis
+
+You can also set context on a per event basis. This will merge the context you provide with the global context.
+
+```php
+use SlashEquip\LaravelSegment\Facades\Segment;
+
+// Identify user with context
+Segment::forUser($user)->identify([
+    'name' => 'John Doe',
+], [
+    'page' => [
+        'path' => '/signup',
+        'referrer' => 'https://producthunt.com',
+    ],
+]);
+
+// Track example event with context
+Segment::forUser($user)->track('User Signed Up', [
+    'source' => 'Product Hunt',
+], [
+    'page' => [
+        'path' => '/signup',
+        'referrer' => 'https://producthunt.com',
+    ],
+]);
+```
+
+
 ### Here have some convenience
 
 Laravel Segment ships with a middleware that you can apply in your HTTP Kernal that will handle
