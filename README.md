@@ -2,8 +2,8 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/slashequip/laravel-segment)
 [![tests](https://github.com/slashequip/laravel-segment/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/slashequip/laravel-segment/actions/workflows/run-tests.yml)
-[![code style](https://github.com/slashequip/laravel-segment/actions/workflows/php-cs-fixer.yml/badge.svg?branch=main)](https://github.com/slashequip/laravel-segment/actions/workflows/php-cs-fixer.yml)
-[![psalm](https://github.com/slashequip/laravel-segment/actions/workflows/psalm.yml/badge.svg?branch=main)](https://github.com/slashequip/laravel-segment/actions/workflows/psalm.yml)
+[![code style](https://github.com/slashequip/laravel-segment/actions/workflows/code-style.yml/badge.svg?branch=main)](https://github.com/slashequip/laravel-segment/actions/workflows/php-cs-fixer.yml)
+[![psalm](https://github.com/slashequip/laravel-segment/actions/workflows/static-analysis.yml/badge.svg?branch=main)](https://github.com/slashequip/laravel-segment/actions/workflows/psalm.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/slashequip/laravel-segment.svg?style=flat-square)](https://packagist.org/packages/slashequip/laravel-segment)
 
 ![Laravel Segment Logo Banner](https://github.com/slashequip/laravel-segment/blob/main/laravel-segment-banner.svg?raw=true)

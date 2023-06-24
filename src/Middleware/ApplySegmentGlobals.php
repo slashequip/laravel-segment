@@ -10,7 +10,7 @@ use SlashEquip\LaravelSegment\Facades\Segment;
 
 class ApplySegmentGlobals
 {
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, mixed $guard = null): mixed
     {
         /**
          * Set the current logged in User as global.
@@ -24,24 +24,27 @@ class ApplySegmentGlobals
          * Build some nice default context based on the current request.
          */
         Segment::setGlobalContext($this->getContext($request));
-        
+
         return $next($request);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getContext(Request $request): array
     {
         return collect([
-                "ip" => $request->ip(),
-                "locale" => $request->getPreferredLanguage(),
-                "userAgent" => $request->userAgent(),
+            'ip' => $request->ip(),
+            'locale' => $request->getPreferredLanguage(),
+            'userAgent' => $request->userAgent(),
 
-                /**
-                 * This is a solid default, generally backend calls
-                 * to Segment are not responsible to determining
-                 * whether or a not a user is active or not.
-                 */
-                "active" => false,
-            ])
+            /**
+             * This is a solid default, generally backend calls
+             * to Segment are not responsible to determining
+             * whether or a not a user is active or not.
+             */
+            'active' => false,
+        ])
             ->filter(function ($context) {
                 // Top level null values in the context
                 // are meaningless at this point.

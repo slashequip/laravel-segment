@@ -9,23 +9,23 @@ use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 
 class SimpleSegmentEvent implements CanBeSentToSegment
 {
+    /**
+     * @param  array<string, mixed>  $eventData
+     */
     public function __construct(
-        private CanBeIdentifiedForSegment $user,
-        private string $event,
-        private ?array $eventData
+        private readonly CanBeIdentifiedForSegment $user,
+        private readonly string $event,
+        private readonly ?array $eventData = null,
     ) {
     }
 
     public function toSegment(): SegmentPayload
     {
-        $payload = new SegmentPayload(
-            $this->user,
-            SegmentPayloadType::TRACK(),
-            $this->eventData
+        return new SegmentPayload(
+            user: $this->user,
+            type: SegmentPayloadType::Track,
+            event: $this->event,
+            data: $this->eventData,
         );
-
-        $payload->setEvent($this->event);
-
-        return $payload;
     }
 }

@@ -12,16 +12,21 @@ use Throwable;
 
 class SegmentService
 {
-    const BATCH_URL = "https://api.segment.io/v1/batch";
+    const BATCH_URL = 'https://api.segment.io/v1/batch';
 
     private CanBeIdentifiedForSegment $globalUser;
 
+    /** @var array<string, mixed> */
     private array $globalContext = [];
 
+    /** @var array<int, mixed> */
     private array $payloads = [];
 
+    /**
+     * @param  array<string, mixed>  $config
+     */
     public function __construct(
-        private array $config
+        private readonly array $config
     ) {
     }
 
@@ -30,11 +35,17 @@ class SegmentService
         $this->globalUser = $globalUser;
     }
 
+    /**
+     * @param  array<string, mixed>  $globalContext
+     */
     public function setGlobalContext(array $globalContext): void
     {
         $this->globalContext = $globalContext;
     }
 
+    /**
+     * @param  array<string, mixed>  $eventData
+     */
     public function track(string $event, ?array $eventData = null): void
     {
         $this->push(
@@ -42,6 +53,9 @@ class SegmentService
         );
     }
 
+    /**
+     * @param  array<string, mixed>  $identifyData
+     */
     public function identify(?array $identifyData = null): void
     {
         $this->push(
@@ -78,12 +92,12 @@ class SegmentService
 
         // Send the batch request.
         $response = Http::withHeaders([
-                "Authorization" => "Bearer " . base64_encode($this->getWriteKey()),
-                "Content-Type" => "application/json",
-            ])
+            'Authorization' => 'Bearer '.base64_encode($this->getWriteKey()),
+            'Content-Type' => 'application/json',
+        ])
             ->post(self::BATCH_URL, [
-                "batch" => $this->getBatchData(),
-                "context" => $this->globalContext,
+                'batch' => $this->getBatchData(),
+                'context' => $this->globalContext,
             ]);
 
         // Do error handling.
@@ -93,6 +107,9 @@ class SegmentService
         $this->clean();
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     protected function getBatchData(): array
     {
         return collect($this->payloads)
@@ -102,49 +119,56 @@ class SegmentService
             ->all();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getDataFromPayload(SegmentPayload $payload): array
     {
         // Initial data.
         $data = [
-            'type' => $payload->getType()->getValue(),
-            'userId' => $payload->getUserId(),
-            'timestamp' => $payload->getTimestamp()->format('Y-m-d\TH:i:s\Z'),
+            'type' => $payload->type->value,
+            'userId' => $payload->user->getSegmentIdentifier(),
+            'timestamp' => $payload->timestamp->format('Y-m-d\TH:i:s\Z'),
         ];
 
         // This is important, Segment will not handle empty
         // data arrays as expected and will drop the event.
-        if (! empty($payload->getData())) {
-            $data[$payload->getDataKey()] = $payload->getData();
+        if (! empty($payload->data)) {
+            $data[$payload->getDataKey()] = $payload->data;
         }
 
         // If it's a tracking call we need an event name!
-        if ($payload->getType()->equals(SegmentPayloadType::TRACK())) {
-            $data['event'] = $payload->getEvent();
+        if ($payload->type === SegmentPayloadType::Track) {
+            $data['event'] = $payload->event;
         }
 
         return $data;
     }
 
-    protected function handleResponseErrors(Response $response)
+    protected function handleResponseErrors(Response $response): void
     {
-        rescue(function () use ($response) {
-            // If there was an error then it can be
-            // thrown here and we can process.
-            $response->throw();
-        }, function (Throwable $e) {
-            // Cleanup and re-throw, we stop here.
-            if (! $this->inSafeMode()) {
-                $this->clean();
+        rescue(
+            callback: function () use ($response) {
+                // If there was an error then it can be
+                // thrown here and we can process.
+                $response->throw();
+            },
+            rescue: function (Throwable $e) {
+                // Cleanup and re-throw, we stop here.
+                if (! $this->inSafeMode()) {
+                    $this->clean();
 
-                throw $e;
-            }
+                    throw $e;
+                }
 
-            // We report manually to prevent duplicate exceptions reports
-            report($e);
-        }, false);
+                // We report manually to prevent duplicate exceptions reports
+                report($e);
+            },
+            report: false
+        );
     }
 
-    protected function clean()
+    protected function clean(): void
     {
         $this->payloads = [];
     }
@@ -156,7 +180,7 @@ class SegmentService
 
     protected function getWriteKey(): string
     {
-        return "{$this->config['write_key']}:" ?? '';
+        return sprintf('%s:', $this->config['write_key'] ?? '');
     }
 
     protected function shouldDefer(): bool
