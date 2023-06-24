@@ -2,8 +2,8 @@
 
 namespace SlashEquip\LaravelSegment\Tests;
 
-use SlashEquip\LaravelSegment\LaravelSegmentServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use SlashEquip\LaravelSegment\LaravelSegmentServiceProvider;
 
 class TestCase extends Orchestra
 {

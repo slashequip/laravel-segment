@@ -40,19 +40,19 @@ it('can track a user using the track method with global user and context', funct
 
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
-        return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
-            && $request->url() === "https://api.segment.io/v1/batch"
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
             && $request['context'] === ['ip' => '127.0.0.1']
             && count($request['batch']) === 1
             && arraysMatch($request['batch'][0], [
-                "type" => "track",
-                "userId" => "abcd",
-                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-                "properties" => [
-                    "name" => "special",
+                'type' => 'track',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'properties' => [
+                    'name' => 'special',
                 ],
-                "event" => "Something Happened",
+                'event' => 'Something Happened',
             ]);
     });
 });
@@ -80,22 +80,22 @@ it('can identify a user using the identify method with global user and context',
 
     // When we call the track method
     Segment::identify([
-        "has_confirmed_something" => true,
+        'has_confirmed_something' => true,
     ]);
 
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
-        return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
-            && $request->url() === "https://api.segment.io/v1/batch"
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
             && $request['context'] === ['ip' => '127.0.0.1']
             && count($request['batch']) === 1
             && arraysMatch($request['batch'][0], [
-                "type" => "identify",
-                "userId" => "abcd",
-                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-                "traits" => [
-                    "has_confirmed_something" => true,
+                'type' => 'identify',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'traits' => [
+                    'has_confirmed_something' => true,
                 ],
             ]);
     });
@@ -145,19 +145,19 @@ it('can track a user using the track method for a given user', function () {
 
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
-        return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
-            && $request->url() === "https://api.segment.io/v1/batch"
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
             && $request['context'] === []
             && count($request['batch']) === 1
             && arraysMatch($request['batch'][0], [
-                "type" => "track",
-                "userId" => "abcd",
-                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-                "properties" => [
-                    "name" => "special",
+                'type' => 'track',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'properties' => [
+                    'name' => 'special',
                 ],
-                "event" => "Something Happened",
+                'event' => 'Something Happened',
             ]);
     });
 });
@@ -177,22 +177,22 @@ it('can identify a user using the identify method for a given user', function ()
 
     // When we call the track method
     Segment::forUser($user)->identify([
-        "has_confirmed_something" => true,
+        'has_confirmed_something' => true,
     ]);
 
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
-        return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
-            && $request->url() === "https://api.segment.io/v1/batch"
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
             && $request['context'] === []
             && count($request['batch']) === 1
             && arraysMatch($request['batch'][0], [
-                "type" => "identify",
-                "userId" => "abcd",
-                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-                "traits" => [
-                    "has_confirmed_something" => true,
+                'type' => 'identify',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'traits' => [
+                    'has_confirmed_something' => true,
                 ],
             ]);
     });
@@ -227,26 +227,26 @@ it('defers tracking events until terminate is called when deferred is enabled', 
 
     // Then we have made the calls to Segment
     Http::assertSent(function (Request $request) {
-        return $request->hasHeader("Content-Type", "application/json")
-            && $request->hasHeader("Authorization", "Bearer " . base64_encode('key_1234:'))
-            && $request->url() === "https://api.segment.io/v1/batch"
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
             && $request['context'] === []
             && count($request['batch']) === 2
             && arraysMatch($request['batch'][0], [
-                "type" => "track",
-                "userId" => "abcd",
-                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-                "properties" => [
-                    "name" => "special",
+                'type' => 'track',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'properties' => [
+                    'name' => 'special',
                 ],
-                "event" => "Something Happened",
+                'event' => 'Something Happened',
             ])
             && arraysMatch($request['batch'][1], [
-                "type" => "identify",
-                "userId" => "abcd",
-                "timestamp" => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-                "traits" => [
-                    "seen_email" => true,
+                'type' => 'identify',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'traits' => [
+                    'seen_email' => true,
                 ],
             ]);
     });
