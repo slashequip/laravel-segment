@@ -16,17 +16,22 @@ class PendingUserSegment
         $this->user = $user;
     }
 
-    public function track(string $event, ?array $eventData = null): void
+    public function track(string $event, ?array $eventData = null, ?array $context = null): void
     {
         $this->service->push(
-            new SimpleSegmentEvent($this->user, $event, $eventData)
+            new SimpleSegmentEvent(
+                $this->user,
+                $event,
+                $eventData,
+                $context
+            )
         );
     }
 
-    public function identify(?array $identifyData = null): void
+    public function identify(?array $identifyData = null, ?array $context = null): void
     {
         $this->service->push(
-            new SimpleSegmentIdentify($this->user, $identifyData)
+            new SimpleSegmentIdentify($this->user, $identifyData, $context)
         );
     }
 }

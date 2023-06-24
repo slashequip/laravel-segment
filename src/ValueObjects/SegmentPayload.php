@@ -19,7 +19,8 @@ class SegmentPayload
     public function __construct(
         protected CanBeIdentifiedForSegment $user,
         protected SegmentPayloadType $type,
-        protected ?array $data
+        protected ?array $data,
+        protected ?array $context = null
     ) {
     }
 
@@ -36,6 +37,11 @@ class SegmentPayload
     public function getData(): ?array
     {
         return $this->data;
+    }
+
+    public function getContext(): ?array
+    {
+        return $this->context;
     }
 
     public function getEvent(): string

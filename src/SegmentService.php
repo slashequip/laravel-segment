@@ -35,17 +35,17 @@ class SegmentService
         $this->globalContext = $globalContext;
     }
 
-    public function track(string $event, ?array $eventData = null): void
+    public function track(string $event, ?array $eventData = null, ?array $context = null): void
     {
         $this->push(
-            new SimpleSegmentEvent($this->globalUser, $event, $eventData)
+            new SimpleSegmentEvent($this->globalUser, $event, $eventData, $context)
         );
     }
 
-    public function identify(?array $identifyData = null): void
+    public function identify(?array $identifyData = null, ?array $context = null): void
     {
         $this->push(
-            new SimpleSegmentIdentify($this->globalUser, $identifyData)
+            new SimpleSegmentIdentify($this->globalUser, $identifyData, $context)
         );
     }
 
@@ -120,6 +120,11 @@ class SegmentService
         // If it's a tracking call we need an event name!
         if ($payload->getType()->equals(SegmentPayloadType::TRACK())) {
             $data['event'] = $payload->getEvent();
+        }
+
+        // Add individual context. Global context is merged onto it.
+        if (! empty($payload->getContext())) {
+            $data['context'] = $payload->getContext();
         }
 
         return $data;
