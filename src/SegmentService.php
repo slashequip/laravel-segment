@@ -16,14 +16,14 @@ class SegmentService
 
     private CanBeIdentifiedForSegment $globalUser;
 
-    /** @var array<string, mixed>  */
+    /** @var array<string, mixed> */
     private array $globalContext = [];
 
-    /** @var array<int, mixed>  */
+    /** @var array<int, mixed> */
     private array $payloads = [];
 
     /**
-     * @param array<string, mixed> $config
+     * @param  array<string, mixed>  $config
      */
     public function __construct(
         private readonly array $config
@@ -36,7 +36,7 @@ class SegmentService
     }
 
     /**
-     * @param array<string, mixed> $globalContext
+     * @param  array<string, mixed>  $globalContext
      */
     public function setGlobalContext(array $globalContext): void
     {
@@ -44,7 +44,7 @@ class SegmentService
     }
 
     /**
-     * @param array<string, mixed> $eventData
+     * @param  array<string, mixed>  $eventData
      */
     public function track(string $event, ?array $eventData = null): void
     {
@@ -54,7 +54,7 @@ class SegmentService
     }
 
     /**
-     * @param array<string, mixed> $identifyData
+     * @param  array<string, mixed>  $identifyData
      */
     public function identify(?array $identifyData = null): void
     {
@@ -180,7 +180,7 @@ class SegmentService
 
     protected function getWriteKey(): string
     {
-        return sprintf("%s:", $this->config['write_key'] ?? '');
+        return sprintf('%s:', $this->config['write_key'] ?? '');
     }
 
     protected function shouldDefer(): bool

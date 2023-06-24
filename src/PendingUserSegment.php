@@ -17,7 +17,7 @@ class PendingUserSegment
     }
 
     /**
-     * @param array<string, mixed>|null $eventData
+     * @param  array<string, mixed>|null  $eventData
      */
     public function track(string $event, ?array $eventData = null): void
     {
@@ -27,7 +27,7 @@ class PendingUserSegment
     }
 
     /**
-     * @param array<string, mixed>|null $identifyData
+     * @param  array<string, mixed>|null  $identifyData
      */
     public function identify(?array $identifyData = null): void
     {

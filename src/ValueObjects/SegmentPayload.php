@@ -12,7 +12,7 @@ class SegmentPayload
     public readonly DateTime $timestamp;
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function __construct(
         public readonly CanBeIdentifiedForSegment $user,
