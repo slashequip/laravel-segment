@@ -16,6 +16,9 @@ class PendingUserSegment
         $this->user = $user;
     }
 
+    /**
+     * @param array<string, mixed>|null $eventData
+     */
     public function track(string $event, ?array $eventData = null): void
     {
         $this->service->push(
@@ -23,6 +26,9 @@ class PendingUserSegment
         );
     }
 
+    /**
+     * @param array<string, mixed>|null $identifyData
+     */
     public function identify(?array $identifyData = null): void
     {
         $this->service->push(

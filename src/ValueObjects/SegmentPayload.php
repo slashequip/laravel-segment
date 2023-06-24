@@ -6,76 +6,30 @@ use DateTime;
 use DateTimeZone;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
-use SlashEquip\LaravelSegment\Exceptions\UnsupportedSegmentPayloadTypeException;
 
 class SegmentPayload
 {
-    /** @var string */
-    protected $event;
+    public readonly DateTime $timestamp;
 
-    /** @var DateTime */
-    protected $timestamp;
-
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
-        protected CanBeIdentifiedForSegment $user,
-        protected SegmentPayloadType $type,
-        protected ?array $data
+        public readonly CanBeIdentifiedForSegment $user,
+        public readonly SegmentPayloadType $type,
+        public readonly ?string $event = null,
+        public readonly array $data = [],
+        ?DateTime $timestamp = null
     ) {
-    }
-
-    public function getUser(): CanBeIdentifiedForSegment
-    {
-        return $this->user;
-    }
-
-    public function getType(): SegmentPayloadType
-    {
-        return $this->type;
-    }
-
-    public function getData(): ?array
-    {
-        return $this->data;
-    }
-
-    public function getEvent(): string
-    {
-        return $this->event;
-    }
-
-    public function setEvent(string $event): void
-    {
-        $this->event = $event;
-    }
-
-    public function getTimestamp(): DateTime
-    {
-        return $this->timestamp ?: new DateTime();
-    }
-
-    public function setTimestamp(DateTime $timestamp): void
-    {
-        // Always shift timezone to UTC.
-        $timestamp->setTimezone(new DateTimeZone('UTC'));
-
-        $this->timestamp = $timestamp;
+        $this->timestamp = $timestamp ?: new DateTime();
+        $this->timestamp->setTimezone(new DateTimeZone('UTC'));
     }
 
     public function getDataKey(): string
     {
-        if ($this->type->equals(SegmentPayloadType::TRACK())) {
-            return 'properties';
-        }
-
-        if ($this->type->equals(SegmentPayloadType::IDENTIFY())) {
-            return 'traits';
-        }
-
-        throw new UnsupportedSegmentPayloadTypeException();
-    }
-
-    public function getUserId(): string
-    {
-        return $this->user->getSegmentIdentifier();
+        return match ($this->type) {
+            SegmentPayloadType::Track => 'properties',
+            SegmentPayloadType::Identify => 'traits',
+        };
     }
 }

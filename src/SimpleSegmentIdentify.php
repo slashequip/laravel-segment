@@ -9,6 +9,9 @@ use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 
 class SimpleSegmentIdentify implements CanBeSentToSegment
 {
+    /**
+     * @param array<string, mixed> $identifyData
+     */
     public function __construct(
         private CanBeIdentifiedForSegment $user,
         private ?array $identifyData = null
@@ -18,9 +21,9 @@ class SimpleSegmentIdentify implements CanBeSentToSegment
     public function toSegment(): SegmentPayload
     {
         return new SegmentPayload(
-            $this->user,
-            SegmentPayloadType::IDENTIFY(),
-            $this->identifyData
+            user: $this->user,
+            type: SegmentPayloadType::Identify,
+            data: $this->identifyData,
         );
     }
 }

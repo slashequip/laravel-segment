@@ -2,15 +2,8 @@
 
 namespace SlashEquip\LaravelSegment\Enums;
 
-use MyCLabs\Enum\Enum;
-
-/**
- * @psalm-immutable
- * @method static SegmentPayloadType TRACK()
- * @method static SegmentPayloadType IDENTIFY()
- */
-class SegmentPayloadType extends Enum
+enum SegmentPayloadType: string
 {
-    private const TRACK = 'track';
-    private const IDENTIFY = 'identify';
+    case Track = 'track';
+    case Identify = 'identify';
 }
