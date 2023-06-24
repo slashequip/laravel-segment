@@ -38,7 +38,8 @@
         }
     },
     "scripts": {
-        "psalm": "vendor/bin/psalm",
+        "analyse": "vendor/bin/phpstan",
+        "format": "vendor/bin/pint",
         "test": "vendor/bin/pest"
     },
     "config": {
