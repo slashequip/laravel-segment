@@ -10,7 +10,7 @@ use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 class SimpleSegmentEvent implements CanBeSentToSegment
 {
     /**
-     * @param array<string, mixed> $eventData
+     * @param  array<string, mixed>  $eventData
      */
     public function __construct(
         private readonly CanBeIdentifiedForSegment $user,
