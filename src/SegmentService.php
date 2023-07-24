@@ -10,7 +10,7 @@ use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
 use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 use Throwable;
 
-class SegmentService
+class SegmentService implements SegmentServiceContract
 {
     const BATCH_URL = 'https://api.segment.io/v1/batch';
 
@@ -46,7 +46,7 @@ class SegmentService
     /**
      * @param  array<string, mixed>  $eventData
      */
-    public function track(string $event, ?array $eventData = null): void
+    public function track(string $event, array $eventData = null): void
     {
         $this->push(
             new SimpleSegmentEvent($this->globalUser, $event, $eventData)
@@ -56,7 +56,7 @@ class SegmentService
     /**
      * @param  array<string, mixed>  $identifyData
      */
-    public function identify(?array $identifyData = null): void
+    public function identify(array $identifyData = null): void
     {
         $this->push(
             new SimpleSegmentIdentify($this->globalUser, $identifyData)
