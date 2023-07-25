@@ -4,12 +4,14 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Http;
+use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\Facades\Segment;
 use SlashEquip\LaravelSegment\SegmentService;
 use SlashEquip\LaravelSegment\Tests\Stubs\SegmentTestUser;
 
 it('can be resolved from the container', function () {
-    $this->assertInstanceOf(SegmentService::class, app(SegmentService::class));
+    expect(app(SegmentServiceContract::class))
+        ->toBeInstanceOf(SegmentService::class);
 });
 
 it('can track a user using the track method with global user and context', function () {
@@ -103,7 +105,7 @@ it('can identify a user using the identify method with global user and context',
 
 it('terminates the segment service on job processed', function () {
     // Given we are spying on the service
-    $service = $this->spy(SegmentService::class);
+    $service = test()->spy(SegmentServiceContract::class);
 
     // When we fire the job processed event
     event(new JobProcessed('default', Mockery::mock(Job::class)));
@@ -115,10 +117,10 @@ it('terminates the segment service on job processed', function () {
 
 it('terminates the segment service on app terminate', function () {
     // Given we are spying on the service
-    $service = $this->spy(SegmentService::class);
+    $service = test()->spy(SegmentServiceContract::class);
 
     // When we terminate the app
-    $this->app->terminate();
+    test()->app()->terminate();
 
     // Then we have called the terminate method
     $service->shouldHaveReceived('terminate')

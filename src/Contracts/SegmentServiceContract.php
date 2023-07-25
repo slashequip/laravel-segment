@@ -1,9 +1,8 @@
 <?php
 
-namespace SlashEquip\LaravelSegment;
+namespace SlashEquip\LaravelSegment\Contracts;
 
-use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
-use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
+use SlashEquip\LaravelSegment\PendingUserSegment;
 
 interface SegmentServiceContract
 {

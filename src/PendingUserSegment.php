@@ -3,6 +3,7 @@
 namespace SlashEquip\LaravelSegment;
 
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 
 class PendingUserSegment
 {

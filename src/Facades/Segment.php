@@ -5,9 +5,9 @@ namespace SlashEquip\LaravelSegment\Facades;
 use Illuminate\Support\Facades\Facade;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
+use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\Facades\Fakes\SegmentFake;
 use SlashEquip\LaravelSegment\PendingUserSegment;
-use SlashEquip\LaravelSegment\SegmentService;
 
 /**
  * @method static void setGlobalUser(CanBeIdentifiedForSegment $globalUser)
@@ -17,17 +17,15 @@ use SlashEquip\LaravelSegment\SegmentService;
  * @method static PendingUserSegment forUser(CanBeIdentifiedForSegment $user)
  * @method static void push(CanBeSentToSegment $segment)
  * @method static void terminate()
- */
-
-/**
+ *
  * @see \SlashEquip\LaravelSegment\SegmentService
- * @see \SlashEquip\LaravelSegment\Facades\Fakes\SegmentFake
+ * @see SegmentFake
  */
 class Segment extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return SegmentService::class;
+        return SegmentServiceContract::class;
     }
 
     public static function fake(): SegmentFake

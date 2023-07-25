@@ -4,16 +4,12 @@ namespace SlashEquip\LaravelSegment;
 
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
+use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\Facades\Segment;
 
 class LaravelSegmentServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any package services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         // Setup config publishing
         $this->publishes([
@@ -35,12 +31,7 @@ class LaravelSegmentServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         // Register config.
         $this->mergeConfigFrom(
@@ -49,7 +40,7 @@ class LaravelSegmentServiceProvider extends ServiceProvider
         );
 
         // Register the Segment service.
-        $this->app->singleton(SegmentService::class, function ($app) {
+        $this->app->singleton(SegmentServiceContract::class, function ($app) {
             return new SegmentService($app->make('config')['segment']);
         });
     }

@@ -7,8 +7,8 @@ use Illuminate\Support\Collection;
 use PHPUnit\Framework\Assert as PHPUnit;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
+use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\PendingUserSegment;
-use SlashEquip\LaravelSegment\SegmentServiceContract;
 use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 use SlashEquip\LaravelSegment\SimpleSegmentIdentify;
 
