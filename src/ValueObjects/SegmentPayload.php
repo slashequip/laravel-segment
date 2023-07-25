@@ -19,7 +19,7 @@ class SegmentPayload
         public readonly SegmentPayloadType $type,
         public readonly ?string $event = null,
         public readonly array $data = [],
-        ?DateTime $timestamp = null
+        DateTime $timestamp = null
     ) {
         $this->timestamp = $timestamp ?: new DateTime();
         $this->timestamp->setTimezone(new DateTimeZone('UTC'));

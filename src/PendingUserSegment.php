@@ -6,11 +6,11 @@ use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 
 class PendingUserSegment
 {
-    private SegmentService $service;
+    private SegmentServiceContract $service;
 
     private CanBeIdentifiedForSegment $user;
 
-    public function __construct(SegmentService $service, CanBeIdentifiedForSegment $user)
+    public function __construct(SegmentServiceContract $service, CanBeIdentifiedForSegment $user)
     {
         $this->service = $service;
         $this->user = $user;
@@ -19,7 +19,7 @@ class PendingUserSegment
     /**
      * @param  array<string, mixed>|null  $eventData
      */
-    public function track(string $event, ?array $eventData = null): void
+    public function track(string $event, array $eventData = null): void
     {
         $this->service->push(
             new SimpleSegmentEvent($this->user, $event, $eventData)
@@ -29,7 +29,7 @@ class PendingUserSegment
     /**
      * @param  array<string, mixed>|null  $identifyData
      */
-    public function identify(?array $identifyData = null): void
+    public function identify(array $identifyData = null): void
     {
         $this->service->push(
             new SimpleSegmentIdentify($this->user, $identifyData)
