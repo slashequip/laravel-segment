@@ -28,10 +28,8 @@ class TestNotification extends Notification implements CanNotifyViaSegment
     {
         return new SimpleSegmentEvent(
             $notifiable,
-            "Test notification",
+            'Test notification',
             ['some' => 'thing'],
         );
     }
-
-
 }

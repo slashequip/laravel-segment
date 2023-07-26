@@ -11,7 +11,7 @@ class SegmentChannel
 {
     public function send(object $notifiable, CanNotifyViaSegment $notification): void
     {
-        if (!$notifiable instanceof CanBeIdentifiedForSegment) {
+        if (! $notifiable instanceof CanBeIdentifiedForSegment) {
             throw new NotifiableCannotBeIdentifiedForSegmentException();
         }
 
