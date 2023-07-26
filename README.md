@@ -158,6 +158,51 @@ Segment::identify([
 ]);
 ```
 
+### Laravel Notifications
+This package includes an out-of-the-box notification channel, to allow you to use Laravel's built-in notification
+feature. To send Segment events to users as notifications, generate your notification as normal;
+
+```
+php artisan make:notification UserSubscribed
+```
+
+You must ensure your notification implements the `CanNotifyViaSegment` interface, and add the required `toSegment`
+method. Then you can configure the `via` method to include the `SegmentChannel` class.
+
+You can then adjust the `toSegment` method to return the event you'd like. 
+
+```
+use Illuminate\Notifications\Notification;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
+use SlashEquip\LaravelSegment\Contracts\CanNotifyViaSegment;
+use SlashEquip\LaravelSegment\Notifications\SegmentChannel;
+use SlashEquip\LaravelSegment\SimpleSegmentEvent;
+
+class UserSubscribed extends Notification implements CanNotifyViaSegment
+{
+    use Notifiable;
+
+    public function __construct(
+    ) {
+    }
+
+    public function via(object $notifiable): array
+    {
+        return [SegmentChannel::class];
+    }
+
+    public function toSegment(CanBeIdentifiedForSegment $notifiable): CanBeSentToSegment
+    {
+        return new SimpleSegmentEvent(
+            $notifiable,
+            'User Subscribed',
+            ['some' => 'thing'],
+        );
+    }
+}
+```
+
 ## Misc
 
 ### Deferring
@@ -167,7 +212,7 @@ through-out the request or process and then send them in batch after your applic
 happens during the Laravel termination.
 
 ### Safe mode
-By default safe-mode is turned on. When safe-mode is active it will swallow any exceptions thrown when making the HTTP
+By default, safe-mode is turned on. When safe-mode is active it will swallow any exceptions thrown when making the HTTP
 request to Segmenta and report them automatically to the exception handler, allow your app to continue running. When
 disabled then the exception will be thrown.
 

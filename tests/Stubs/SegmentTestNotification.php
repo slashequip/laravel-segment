@@ -2,18 +2,16 @@
 
 namespace SlashEquip\LaravelSegment\Tests\Stubs;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
 use SlashEquip\LaravelSegment\Contracts\CanNotifyViaSegment;
 use SlashEquip\LaravelSegment\Notifications\SegmentChannel;
 use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 
-class TestNotification extends Notification implements CanNotifyViaSegment
+class SegmentTestNotification extends Notification implements CanNotifyViaSegment
 {
-    use Notifiable;
-
     public function __construct(
         private int $number
     ) {
@@ -28,10 +26,11 @@ class TestNotification extends Notification implements CanNotifyViaSegment
     {
         return new SimpleSegmentEvent(
             $notifiable,
-            "Test notification",
+            Str::of(class_basename(static::class))
+                ->snake()
+                ->replace('_', ' ')
+                ->title(),
             ['some' => 'thing'],
         );
     }
-
-
 }
