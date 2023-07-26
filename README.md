@@ -171,7 +171,7 @@ method. Then you can configure the `via` method to include the `SegmentChannel` 
 
 You can then adjust the `toSegment` method to return the event you'd like. 
 
-```
+```php
 use Illuminate\Notifications\Notification;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
@@ -181,8 +181,6 @@ use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 
 class UserSubscribed extends Notification implements CanNotifyViaSegment
 {
-    use Notifiable;
-
     public function __construct(
     ) {
     }
@@ -197,7 +195,10 @@ class UserSubscribed extends Notification implements CanNotifyViaSegment
         return new SimpleSegmentEvent(
             $notifiable,
             'User Subscribed',
-            ['some' => 'thing'],
+            [
+                'plan' => 'basic',
+                'team_name' => 'Funky chickens',
+            ],
         );
     }
 }
