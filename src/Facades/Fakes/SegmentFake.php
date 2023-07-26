@@ -16,10 +16,13 @@ class SegmentFake implements SegmentServiceContract
 {
     private CanBeIdentifiedForSegment $user;
 
+    /** @var  array<string, mixed>  $context */
     private ?array $context = [];
 
+    /** @var  array<int, SimpleSegmentEvent>  $events */
     private array $events = [];
 
+    /** @var  array<int, SimpleSegmentIdentify>  $identities */
     private array $identities = [];
 
     public function setGlobalUser(CanBeIdentifiedForSegment $globalUser): void
@@ -27,16 +30,25 @@ class SegmentFake implements SegmentServiceContract
         $this->user = $globalUser;
     }
 
+    /**
+     * @param  array<string, mixed>  $globalContext
+     */
     public function setGlobalContext(array $globalContext): void
     {
         $this->context = $globalContext;
     }
 
+    /**
+     * @param  array<string, mixed>  $identifyData
+     */
     public function identify(?array $identifyData = []): void
     {
         $this->identities[] = new SimpleSegmentIdentify($this->user, $identifyData);
     }
 
+    /**
+     * @param  array<string, mixed>  $eventData
+     */
     public function track(string $event, array $eventData = null): void
     {
         $this->events[] = new SimpleSegmentEvent($this->user, $event, $eventData);
@@ -156,6 +168,14 @@ class SegmentFake implements SegmentServiceContract
         $events = collect($this->events);
 
         PHPUnit::assertEmpty($events, $events->count().' events were found unexpectedly.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getContext(): ?array
+    {
+        return $this->context;
     }
 
     private function identities(Closure $callback = null): Collection
