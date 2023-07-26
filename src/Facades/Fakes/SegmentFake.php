@@ -16,13 +16,13 @@ class SegmentFake implements SegmentServiceContract
 {
     private CanBeIdentifiedForSegment $user;
 
-    /** @var  array<string, mixed>  $context */
+    /** @var array<string, mixed> */
     private ?array $context = [];
 
-    /** @var  array<int, SimpleSegmentEvent>  $events */
+    /** @var array<int, SimpleSegmentEvent> */
     private array $events = [];
 
-    /** @var  array<int, SimpleSegmentIdentify>  $identities */
+    /** @var array<int, SimpleSegmentIdentify> */
     private array $identities = [];
 
     public function setGlobalUser(CanBeIdentifiedForSegment $globalUser): void
