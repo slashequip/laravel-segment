@@ -22,7 +22,6 @@ class SegmentPayload
         ?DateTime $timestamp = null
     ) {
         $this->timestamp = $timestamp ?: new DateTime();
-        $this->timestamp->setTimezone(new DateTimeZone('UTC'));
     }
 
     public function getDataKey(): string
