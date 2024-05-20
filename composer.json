@@ -22,9 +22,8 @@
         "laravel/pint": "^1.10",
         "mockery/mockery": "^1.4",
         "nunomaduro/larastan": "^2.0",
-        "orchestra/testbench": "^7.25|^8.5",
-        "pestphp/pest": "^1.0",
-        "phpunit/phpunit": "^9.3",
+        "orchestra/testbench": "^7.25|^8.5|^9.0",
+        "pestphp/pest": "^1.23",
         "vimeo/psalm": "^4.6"
     },
     "autoload": {
