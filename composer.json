@@ -24,7 +24,7 @@
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.25|^8.5|^9.0",
         "pestphp/pest": "^1.23",
-        "vimeo/psalm": "^4.6"
+        "vimeo/psalm": "^5.24"
     },
     "autoload": {
         "psr-4": {
