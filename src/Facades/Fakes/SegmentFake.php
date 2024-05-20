@@ -49,7 +49,7 @@ class SegmentFake implements SegmentServiceContract
     /**
      * @param  array<string, mixed>  $eventData
      */
-    public function track(string $event, array $eventData = null): void
+    public function track(string $event, ?array $eventData = null): void
     {
         $this->events[] = new SimpleSegmentEvent($this->user, $event, $eventData);
     }
@@ -76,7 +76,7 @@ class SegmentFake implements SegmentServiceContract
     {
     }
 
-    public function assertIdentified(Closure|int $callback = null): void
+    public function assertIdentified(Closure|int|null $callback = null): void
     {
         if (is_numeric($callback)) {
             $this->assertIdentifiedTimes($callback);
@@ -100,7 +100,7 @@ class SegmentFake implements SegmentServiceContract
         );
     }
 
-    public function assertNotIdentified(Closure $callback = null): void
+    public function assertNotIdentified(?Closure $callback = null): void
     {
         PHPUnit::assertCount(
             0, $this->identities($callback),
@@ -115,7 +115,7 @@ class SegmentFake implements SegmentServiceContract
         PHPUnit::assertEmpty($identities, $identities->count().' events were found unexpectedly.');
     }
 
-    public function assertTracked(Closure|int $callback = null): void
+    public function assertTracked(Closure|int|null $callback = null): void
     {
         if (is_numeric($callback)) {
             $this->assertTrackedTimes($callback);
@@ -139,7 +139,7 @@ class SegmentFake implements SegmentServiceContract
         );
     }
 
-    public function assertEventTracked(string $event, Closure|int $callback = null): void
+    public function assertEventTracked(string $event, Closure|int|null $callback = null): void
     {
         PHPUnit::assertTrue(
             $this->events($callback, $event)->count() > 0,
@@ -147,7 +147,7 @@ class SegmentFake implements SegmentServiceContract
         );
     }
 
-    public function assertNotTracked(Closure $callback = null): void
+    public function assertNotTracked(?Closure $callback = null): void
     {
         PHPUnit::assertCount(
             0, $this->events($callback),
@@ -155,7 +155,7 @@ class SegmentFake implements SegmentServiceContract
         );
     }
 
-    public function assertEventNotTracked(string $event, Closure|int $callback = null): void
+    public function assertEventNotTracked(string $event, Closure|int|null $callback = null): void
     {
         PHPUnit::assertCount(
             0, $this->events($callback, $event),
@@ -178,7 +178,7 @@ class SegmentFake implements SegmentServiceContract
         return $this->context;
     }
 
-    private function identities(Closure $callback = null): Collection
+    private function identities(?Closure $callback = null): Collection
     {
         $identities = collect($this->identities);
 
@@ -191,7 +191,7 @@ class SegmentFake implements SegmentServiceContract
         return $identities->filter(fn (SimpleSegmentIdentify $identity) => $callback($identity));
     }
 
-    private function events(Closure $callback = null, string $event = null): Collection
+    private function events(?Closure $callback = null, ?string $event = null): Collection
     {
         $events = collect($this->events);
 
