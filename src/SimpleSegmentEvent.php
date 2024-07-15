@@ -16,8 +16,7 @@ class SimpleSegmentEvent implements CanBeSentToSegment
         private readonly CanBeIdentifiedForSegment $user,
         private readonly string $event,
         private readonly ?array $eventData = null,
-    ) {
-    }
+    ) {}
 
     public function toSegment(): SegmentPayload
     {

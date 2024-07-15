@@ -254,6 +254,168 @@ it('defers tracking events until terminate is called when deferred is enabled', 
     });
 });
 
+it('terminates directly when using trackNow while deferred is enabled', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // And we call the track method
+    Segment::forUser($user)->trackNow('Something Happened', [
+        'name' => 'special',
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'track',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'properties' => [
+                    'name' => 'special',
+                ],
+                'event' => 'Something Happened',
+            ]);
+    });
+});
+
+it('terminates directly when using identifyNow while deferred is enabled', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // And we call the track method
+    Segment::forUser($user)->identifyNow([
+        'seen_email' => true,
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'identify',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'traits' => [
+                    'seen_email' => true,
+                ],
+            ]);
+    });
+});
+
+it('terminates directly when using trackNow while deferred is enabled with global user and context', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we have set global user
+    Segment::setGlobalUser($user);
+
+    // And we have set global context
+    Segment::setGlobalContext([
+        'ip' => '127.0.0.1',
+    ]);
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // And we call the track method
+    Segment::trackNow('Something Happened', [
+        'name' => 'special',
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === ['ip' => '127.0.0.1']
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'track',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'properties' => [
+                    'name' => 'special',
+                ],
+                'event' => 'Something Happened',
+            ]);
+    });
+});
+
+it('terminates directly when using identifyNow while deferred is enabled with global user and context', function () {
+    // Given we have a user
+    $user = new SegmentTestUser('abcd');
+
+    // And we are deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we have set global user
+    Segment::setGlobalUser($user);
+
+    // And we have set global context
+    Segment::setGlobalContext([
+        'ip' => '127.0.0.1',
+    ]);
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // And we call the track method
+    Segment::identifyNow([
+        'seen_email' => true,
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === ['ip' => '127.0.0.1']
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'identify',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'traits' => [
+                    'seen_email' => true,
+                ],
+            ]);
+    });
+});
+
 it('does not sent tracking events when not enabled', function () {
     // Given we have a user
     $user = new SegmentTestUser('abcd');

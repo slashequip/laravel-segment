@@ -14,8 +14,7 @@ class SegmentTestNotification extends Notification implements CanNotifyViaSegmen
 {
     public function __construct(
         private int $number
-    ) {
-    }
+    ) {}
 
     public function via(object $notifiable): array
     {

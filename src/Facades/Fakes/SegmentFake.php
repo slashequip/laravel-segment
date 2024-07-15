@@ -72,9 +72,7 @@ class SegmentFake implements SegmentServiceContract
         }
     }
 
-    public function terminate(): void
-    {
-    }
+    public function terminate(): void {}
 
     public function assertIdentified(Closure|int|null $callback = null): void
     {

@@ -28,6 +28,18 @@ class PendingUserSegment
     }
 
     /**
+     * @param  array<string, mixed>|null  $eventData
+     */
+    public function trackNow(string $event, ?array $eventData = null): void
+    {
+        $this->service->push(
+            new SimpleSegmentEvent($this->user, $event, $eventData)
+        );
+
+        $this->service->terminate();
+    }
+
+    /**
      * @param  array<string, mixed>|null  $identifyData
      */
     public function identify(?array $identifyData = null): void
@@ -35,5 +47,17 @@ class PendingUserSegment
         $this->service->push(
             new SimpleSegmentIdentify($this->user, $identifyData)
         );
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $identifyData
+     */
+    public function identifyNow(?array $identifyData = null): void
+    {
+        $this->service->push(
+            new SimpleSegmentIdentify($this->user, $identifyData)
+        );
+
+        $this->service->terminate();
     }
 }
