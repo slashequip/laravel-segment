@@ -139,6 +139,12 @@ Segment::forUser($user)->track('User Signed Up', [
 Segment::track('User Signed Up', [
     'source' => 'Product Hunt',
 ]);
+
+// If you have defer enabled in the config
+// you can still track an event immediately using trackNow.
+Segment::trackNow('User Signed Up', [
+    'source' => 'Product Hunt',
+]);
 ```
 
 ### For identifying users
@@ -155,6 +161,12 @@ Segment::forUser($user)->identify([
 Segment::identify([
     'last_logged_in' => '2021-03-24 20:05:30',
     'latest_subscription_amount' => '$24.60',
+]);
+
+// If you have defer enabled in the config
+// you can still identify a user immediately using identifyNow.
+Segment::identifyNow('User Signed Up', [
+    'source' => 'Product Hunt',
 ]);
 ```
 

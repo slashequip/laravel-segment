@@ -28,8 +28,7 @@ class SegmentService implements SegmentServiceContract
      */
     public function __construct(
         private readonly array $config
-    ) {
-    }
+    ) {}
 
     public function setGlobalUser(CanBeIdentifiedForSegment $globalUser): void
     {
@@ -55,6 +54,18 @@ class SegmentService implements SegmentServiceContract
     }
 
     /**
+     * @param  array<string, mixed>  $eventData
+     */
+    public function trackNow(string $event, ?array $eventData = null): void
+    {
+        $this->push(
+            new SimpleSegmentEvent($this->globalUser, $event, $eventData)
+        );
+
+        $this->terminate();
+    }
+
+    /**
      * @param  array<string, mixed>  $identifyData
      */
     public function identify(?array $identifyData = null): void
@@ -62,6 +73,18 @@ class SegmentService implements SegmentServiceContract
         $this->push(
             new SimpleSegmentIdentify($this->globalUser, $identifyData)
         );
+    }
+
+    /**
+     * @param  array<string, mixed>  $identifyData
+     */
+    public function identifyNow(?array $identifyData = null): void
+    {
+        $this->push(
+            new SimpleSegmentIdentify($this->globalUser, $identifyData)
+        );
+
+        $this->terminate();
     }
 
     public function forUser(CanBeIdentifiedForSegment $user): PendingUserSegment
