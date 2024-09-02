@@ -47,9 +47,25 @@ class SegmentFake implements SegmentServiceContract
     }
 
     /**
+     * @param  array<string, mixed>  $identifyData
+     */
+    public function identifyNow(?array $identifyData = []): void
+    {
+        $this->identities[] = new SimpleSegmentIdentify($this->user, $identifyData);
+    }
+
+    /**
      * @param  array<string, mixed>  $eventData
      */
     public function track(string $event, ?array $eventData = null): void
+    {
+        $this->events[] = new SimpleSegmentEvent($this->user, $event, $eventData);
+    }
+
+    /**
+     * @param  array<string, mixed>  $eventData
+     */
+    public function trackNow(string $event, ?array $eventData = null): void
     {
         $this->events[] = new SimpleSegmentEvent($this->user, $event, $eventData);
     }
