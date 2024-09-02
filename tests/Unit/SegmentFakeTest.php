@@ -38,6 +38,18 @@ it('can test that an identity was called', function () {
     Segment::assertIdentifiedTimes(1);
 });
 
+it('can test that an identity was called immediately', function () {
+    Segment::fake();
+
+    Segment::forUser($this->user)->identifyNow([
+        'first_name' => 'Lorem',
+        'last_name' => 'Ipsum',
+    ]);
+
+    Segment::assertIdentified();
+    Segment::assertIdentifiedTimes(1);
+});
+
 it('can test that an identity was called one times', function () {
     Segment::fake();
 
@@ -108,6 +120,19 @@ it('can test that an event was tracked', function () {
     Segment::fake();
 
     Segment::forUser($this->user)->track('some_event', [
+        'first_name' => 'Lorem',
+        'last_name' => 'Ipsum',
+    ]);
+
+    Segment::assertTracked();
+    Segment::assertTrackedTimes(1);
+});
+
+
+it('can test that an event was tracked immediately', function () {
+    Segment::fake();
+
+    Segment::forUser($this->user)->trackNow('some_event', [
         'first_name' => 'Lorem',
         'last_name' => 'Ipsum',
     ]);
