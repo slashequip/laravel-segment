@@ -2,6 +2,7 @@
 
 namespace SlashEquip\LaravelSegment\Facades;
 
+use Closure;
 use Illuminate\Support\Facades\Facade;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
@@ -19,7 +20,16 @@ use SlashEquip\LaravelSegment\PendingUserSegment;
  * @method static PendingUserSegment forUser(CanBeIdentifiedForSegment $user)
  * @method static void push(CanBeSentToSegment $segment)
  * @method static void terminate()
- *
+ * @method static void assertIdentified(Closure|int|null $callback = null)
+ * @method static void assertIdentifiedTimes(int $times)
+ * @method static void assertNotIdentified(Closure $callback = null)
+ * @method static void assertNothingIdentified()
+ * @method static void assertTracked(Closure|int|null $callback = null)
+ * @method static void assertTrackedTimes(int $times)
+ * @method static void assertEventTracked(string $event,Closure|int|null $callback = null)
+ * @method static void assertNotTracked(Closure $callback = null)
+ * @method static void assertNothingTracked()
+
  * @see \SlashEquip\LaravelSegment\SegmentService
  * @see SegmentFake
  */
