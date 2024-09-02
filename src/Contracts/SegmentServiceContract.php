@@ -19,9 +19,20 @@ interface SegmentServiceContract
     public function track(string $event, ?array $eventData = null): void;
 
     /**
+     * @param  array<string, mixed>  $eventData
+     */
+    public function trackNow(string $event, ?array $eventData = null): void;
+
+    /**
      * @param  array<string, mixed>  $identifyData
      */
     public function identify(?array $identifyData = null): void;
+
+    /**
+     * @param  array<string, mixed>  $identifyData
+     */
+    public function identifyNow(?array $identifyData = null): void;
+
 
     public function forUser(CanBeIdentifiedForSegment $user): PendingUserSegment;
 
