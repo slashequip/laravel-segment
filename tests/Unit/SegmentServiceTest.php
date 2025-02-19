@@ -50,7 +50,7 @@ it('can track a user using the track method with global user and context', funct
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -95,7 +95,7 @@ it('can identify a user using the identify method with global user and context',
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'has_confirmed_something' => true,
                 ],
@@ -155,7 +155,7 @@ it('can track a user using the track method for a given user', function () {
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -192,7 +192,7 @@ it('can identify a user using the identify method for a given user', function ()
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'has_confirmed_something' => true,
                 ],
@@ -237,7 +237,7 @@ it('defers tracking events until terminate is called when deferred is enabled', 
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -246,7 +246,7 @@ it('defers tracking events until terminate is called when deferred is enabled', 
             && arraysMatch($request['batch'][1], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'seen_email' => true,
                 ],
@@ -282,7 +282,7 @@ it('terminates directly when using trackNow while deferred is enabled', function
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -319,7 +319,7 @@ it('terminates directly when using identifyNow while deferred is enabled', funct
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'seen_email' => true,
                 ],
@@ -363,7 +363,7 @@ it('terminates directly when using trackNow while deferred is enabled with globa
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -408,7 +408,7 @@ it('terminates directly when using identifyNow while deferred is enabled with gl
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'seen_email' => true,
                 ],

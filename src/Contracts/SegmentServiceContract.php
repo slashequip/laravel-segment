@@ -33,7 +33,6 @@ interface SegmentServiceContract
      */
     public function identifyNow(?array $identifyData = null): void;
 
-
     public function forUser(CanBeIdentifiedForSegment $user): PendingUserSegment;
 
     public function push(CanBeSentToSegment $segment): void;
