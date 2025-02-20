@@ -1,13 +1,9 @@
 name: Static Analysis
 
-on:
-  push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+on: [pull_request]
 
 jobs:
-  psalm:
+  phpstan:
     name: static-analysis
     runs-on: ubuntu-latest
     steps:
