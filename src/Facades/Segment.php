@@ -29,7 +29,7 @@ use SlashEquip\LaravelSegment\PendingUserSegment;
  * @method static void assertEventTracked(string $event,Closure|int|null $callback = null)
  * @method static void assertNotTracked(Closure $callback = null)
  * @method static void assertNothingTracked()
-
+ *
  * @see \SlashEquip\LaravelSegment\SegmentService
  * @see SegmentFake
  */
@@ -42,7 +42,7 @@ class Segment extends Facade
 
     public static function fake(): SegmentFake
     {
-        return tap(new SegmentFake(), function (SegmentFake $fake) {
+        return tap(new SegmentFake, function (SegmentFake $fake) {
             static::swap($fake);
         });
     }
