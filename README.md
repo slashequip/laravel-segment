@@ -170,6 +170,29 @@ Segment::identifyNow('User Signed Up', [
 ]);
 ```
 
+### Anonymous users
+
+Segment allows you to track events for users that are not yet users in your system, they call these anonymous users.
+
+To track events for anonymous users you can use apply the `ShouldBeAnonymouslyIdentified` interface to any `CanBeIdentifiedForSegment` implementation.
+
+```php
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\ShouldBeAnonymouslyIdentified;
+
+class SegmentAnonymousTestUser implements CanBeIdentifiedForSegment, ShouldBeAnonymouslyIdentified
+{
+}
+```
+
+For convenience, the package comes with a `SimpleSegmentAnonymousUser` class that implements the `ShouldBeAnonymouslyIdentified` interface.
+
+```php
+use SlashEquip\LaravelSegment\SimpleSegmentAnonymousUser;
+
+Segment::forUser(new SimpleSegmentAnonymousUser('123'))->track('Kitchen sink used');
+```
+
 ### Laravel Notifications
 This package includes an out-of-the-box notification channel, to allow you to use Laravel's built-in notification
 feature. To send Segment events to users as notifications, generate your notification as normal;

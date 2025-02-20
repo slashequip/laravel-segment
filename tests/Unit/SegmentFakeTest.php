@@ -7,7 +7,7 @@ use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 use SlashEquip\LaravelSegment\SimpleSegmentIdentify;
 
 beforeEach(function () {
-    $this->user = new class() implements CanBeIdentifiedForSegment
+    $this->user = new class implements CanBeIdentifiedForSegment
     {
         public function getSegmentIdentifier(): string
         {
@@ -127,7 +127,6 @@ it('can test that an event was tracked', function () {
     Segment::assertTracked();
     Segment::assertTrackedTimes(1);
 });
-
 
 it('can test that an event was tracked immediately', function () {
     Segment::fake();

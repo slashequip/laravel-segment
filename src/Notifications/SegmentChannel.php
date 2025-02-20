@@ -12,7 +12,7 @@ class SegmentChannel
     public function send(object $notifiable, CanNotifyViaSegment $notification): void
     {
         if (! $notifiable instanceof CanBeIdentifiedForSegment) {
-            throw new NotifiableCannotBeIdentifiedForSegmentException();
+            throw new NotifiableCannotBeIdentifiedForSegmentException;
         }
 
         Segment::push($notification->toSegment($notifiable));
