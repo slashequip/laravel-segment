@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
 use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
+use SlashEquip\LaravelSegment\Contracts\ShouldBeAnonymouslyIdentified;
 use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
 use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 use Throwable;
@@ -115,10 +116,8 @@ class SegmentService implements SegmentServiceContract
         }
 
         // Send the batch request.
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.base64_encode($this->getWriteKey()),
-            'Content-Type' => 'application/json',
-        ])
+        $response = Http::asJson()
+            ->withToken(base64_encode($this->getWriteKey()))
             ->post(self::BATCH_URL, [
                 'batch' => $this->getBatchData(),
                 'context' => $this->globalContext,
@@ -137,9 +136,7 @@ class SegmentService implements SegmentServiceContract
     protected function getBatchData(): array
     {
         return collect($this->payloads)
-            ->map(function (SegmentPayload $payload) {
-                return $this->getDataFromPayload($payload);
-            })
+            ->map(fn (SegmentPayload $payload) => $this->getDataFromPayload($payload))
             ->all();
     }
 
@@ -148,10 +145,12 @@ class SegmentService implements SegmentServiceContract
      */
     protected function getDataFromPayload(SegmentPayload $payload): array
     {
+        $key = $payload->user instanceof ShouldBeAnonymouslyIdentified ? 'anonymousId' : 'userId';
+
         // Initial data.
         $data = [
             'type' => $payload->type->value,
-            'userId' => $payload->user->getSegmentIdentifier(),
+            $key => $payload->user->getSegmentIdentifier(),
             'timestamp' => $payload->timestamp->format('Y-m-d\TH:i:s\Z'),
         ];
 
@@ -171,7 +170,7 @@ class SegmentService implements SegmentServiceContract
 
     protected function handleResponseErrors(Response $response): void
     {
-        rescue(
+        \rescue(
             callback: function () use ($response) {
                 // If there was an error then it can be
                 // thrown here and we can process.

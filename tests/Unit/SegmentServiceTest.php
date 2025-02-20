@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\Facades\Segment;
 use SlashEquip\LaravelSegment\SegmentService;
+use SlashEquip\LaravelSegment\Tests\Stubs\SegmentAnonymousTestUser;
 use SlashEquip\LaravelSegment\Tests\Stubs\SegmentTestUser;
 
 it('can be resolved from the container', function () {
@@ -50,7 +51,7 @@ it('can track a user using the track method with global user and context', funct
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -95,7 +96,7 @@ it('can identify a user using the identify method with global user and context',
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'has_confirmed_something' => true,
                 ],
@@ -155,7 +156,7 @@ it('can track a user using the track method for a given user', function () {
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -192,7 +193,7 @@ it('can identify a user using the identify method for a given user', function ()
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'has_confirmed_something' => true,
                 ],
@@ -237,7 +238,7 @@ it('defers tracking events until terminate is called when deferred is enabled', 
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -246,7 +247,7 @@ it('defers tracking events until terminate is called when deferred is enabled', 
             && arraysMatch($request['batch'][1], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'seen_email' => true,
                 ],
@@ -282,7 +283,7 @@ it('terminates directly when using trackNow while deferred is enabled', function
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -319,7 +320,7 @@ it('terminates directly when using identifyNow while deferred is enabled', funct
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'seen_email' => true,
                 ],
@@ -363,7 +364,7 @@ it('terminates directly when using trackNow while deferred is enabled with globa
             && arraysMatch($request['batch'][0], [
                 'type' => 'track',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'properties' => [
                     'name' => 'special',
                 ],
@@ -408,7 +409,7 @@ it('terminates directly when using identifyNow while deferred is enabled with gl
             && arraysMatch($request['batch'][0], [
                 'type' => 'identify',
                 'userId' => 'abcd',
-                'timestamp' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
                 'traits' => [
                     'seen_email' => true,
                 ],
@@ -436,4 +437,78 @@ it('does not sent tracking events when not enabled', function () {
 
     // Then we have made the calls to Segment
     Http::assertNothingSent();
+});
+
+// Anonymous user
+it('can track a user using the track method for a given anonymous user', function () {
+    // Given we have a user
+    $user = new SegmentAnonymousTestUser('abcd');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the track method
+    Segment::forUser($user)->track('Something Happened', [
+        'name' => 'special',
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'track',
+                'anonymousId' => 'abcd',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+                'properties' => [
+                    'name' => 'special',
+                ],
+                'event' => 'Something Happened',
+            ]);
+    });
+});
+
+it('can identify a user using the identify method for a given anonymous user', function () {
+    // Given we have a user
+    $user = new SegmentAnonymousTestUser('abcd');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the track method
+    Segment::forUser($user)->identify([
+        'has_confirmed_something' => true,
+    ]);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'identify',
+                'anonymousId' => 'abcd',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+                'traits' => [
+                    'has_confirmed_something' => true,
+                ],
+            ]);
+    });
 });
