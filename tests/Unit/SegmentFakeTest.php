@@ -3,9 +3,9 @@
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Facades\Fakes\SegmentFake;
 use SlashEquip\LaravelSegment\Facades\Segment;
+use SlashEquip\LaravelSegment\SimpleSegmentAlias;
 use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 use SlashEquip\LaravelSegment\SimpleSegmentIdentify;
-use SlashEquip\LaravelSegment\SimpleSegmentAlias;
 
 beforeEach(function () {
     $this->user = new class implements CanBeIdentifiedForSegment

@@ -7,11 +7,9 @@ use Illuminate\Support\Facades\Http;
 use RuntimeException;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
-use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
-use SlashEquip\LaravelSegment\Contracts\ShouldBeAnonymouslyIdentified;
-use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
-use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 use SlashEquip\LaravelSegment\Contracts\SegmentPayloadable;
+use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
+use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 use Throwable;
 
 class SegmentService implements SegmentServiceContract
