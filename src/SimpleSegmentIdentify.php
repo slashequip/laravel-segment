@@ -4,7 +4,6 @@ namespace SlashEquip\LaravelSegment;
 
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
-use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
 use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 
 class SimpleSegmentIdentify implements CanBeSentToSegment
@@ -15,13 +14,14 @@ class SimpleSegmentIdentify implements CanBeSentToSegment
     public function __construct(
         private CanBeIdentifiedForSegment $user,
         private ?array $identifyData = null
-    ) {}
+    ) {
+        //
+    }
 
     public function toSegment(): SegmentPayload
     {
-        return new SegmentPayload(
+        return SegmentPayload::forIdentify(
             user: $this->user,
-            type: SegmentPayloadType::Identify,
             data: $this->identifyData,
         );
     }

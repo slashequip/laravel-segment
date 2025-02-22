@@ -6,4 +6,5 @@ enum SegmentPayloadType: string
 {
     case Track = 'track';
     case Identify = 'identify';
+    case Alias = 'alias';
 }

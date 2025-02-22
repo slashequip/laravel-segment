@@ -5,10 +5,12 @@ namespace SlashEquip\LaravelSegment\Facades\Fakes;
 use Closure;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Assert as PHPUnit;
+use RuntimeException;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
 use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\PendingUserSegment;
+use SlashEquip\LaravelSegment\SimpleSegmentAlias;
 use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 use SlashEquip\LaravelSegment\SimpleSegmentIdentify;
 
@@ -24,6 +26,9 @@ class SegmentFake implements SegmentServiceContract
 
     /** @var array<int, SimpleSegmentIdentify> */
     private array $identities = [];
+
+    /** @var array<int, SimpleSegmentAlias> */
+    private array $aliases = [];
 
     public function setGlobalUser(CanBeIdentifiedForSegment $globalUser): void
     {
@@ -85,6 +90,10 @@ class SegmentFake implements SegmentServiceContract
 
         if ($segment instanceof SimpleSegmentEvent) {
             $this->events[] = $segment;
+        }
+
+        if ($segment instanceof SimpleSegmentAlias) {
+            $this->aliases[] = $segment;
         }
     }
 
@@ -218,9 +227,80 @@ class SegmentFake implements SegmentServiceContract
         return $events
             ->when($event, function (Collection $collection) use ($event) {
                 return $collection->filter(function (SimpleSegmentEvent $segmentEvent) use ($event) {
-                    return $segmentEvent->toSegment()->event === $event;
+                    return $segmentEvent->toSegment()->data['event'] === $event;
                 });
             })
             ->filter(fn (SimpleSegmentEvent $event) => $callback($event));
+    }
+
+    public function alias(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void
+    {
+        $this->aliases[] = new SimpleSegmentAlias(
+            $previousUser,
+            $currentUser ?? $this->getGlobalUserOrFail()
+        );
+    }
+
+    public function aliasNow(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void
+    {
+        $this->aliases[] = new SimpleSegmentAlias(
+            $previousUser,
+            $currentUser ?? $this->getGlobalUserOrFail()
+        );
+    }
+
+    public function assertAliased(?Closure $callback = null): void
+    {
+        PHPUnit::assertTrue(
+            $this->aliases($callback)->count() > 0,
+            'The expected aliases were not called.'
+        );
+    }
+
+    public function assertAliasedTimes(int $times = 1): void
+    {
+        $count = collect($this->aliases)->count();
+
+        PHPUnit::assertSame(
+            $times, $count,
+            "The alias was called {$count} times instead of {$times} times."
+        );
+    }
+
+    public function assertNotAliased(?Closure $callback = null): void
+    {
+        PHPUnit::assertCount(
+            0, $this->aliases($callback),
+            'The unexpected alias was called.'
+        );
+    }
+
+    public function assertNothingAliased(): void
+    {
+        $aliases = collect($this->aliases);
+
+        PHPUnit::assertEmpty($aliases, $aliases->count().' aliases were found unexpectedly.');
+    }
+
+    private function aliases(?Closure $callback = null): Collection
+    {
+        $aliases = collect($this->aliases);
+
+        if ($aliases->isEmpty()) {
+            return collect();
+        }
+
+        $callback = $callback ?: fn () => true;
+
+        return $aliases->filter(fn (SimpleSegmentAlias $alias) => $callback($alias));
+    }
+
+    private function getGlobalUserOrFail(): CanBeIdentifiedForSegment
+    {
+        if (! isset($this->user)) {
+            throw new RuntimeException('No global user set and no current user provided for alias.');
+        }
+
+        return $this->user;
     }
 }

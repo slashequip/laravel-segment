@@ -93,7 +93,7 @@ it('can test that an identity was called using a closure', function () {
     ]);
 
     Segment::assertIdentified(function (SimpleSegmentIdentify $identify) {
-        return $identify->toSegment()->data['first_name'] === 'Lorem';
+        return $identify->toSegment()->data['traits']['first_name'] === 'Lorem';
     });
 });
 
@@ -106,7 +106,7 @@ it('can test that an identity was not called using a closure', function () {
     ]);
 
     Segment::assertNotIdentified(function (SimpleSegmentIdentify $identify) {
-        return $identify->toSegment()->data['first_name'] === 'Unexpected';
+        return $identify->toSegment()->data['traits']['first_name'] === 'Unexpected';
     });
 });
 
@@ -183,7 +183,7 @@ it('can test that an activity was tracked by using a closure', function () {
     ]);
 
     Segment::assertTracked(function (SimpleSegmentEvent $event) {
-        return $event->toSegment()->event === 'some_event';
+        return $event->toSegment()->data['event'] === 'some_event';
     });
 });
 
@@ -195,8 +195,8 @@ it('can test that an activity was not tracked by using a closure', function () {
         'last_name' => 'Ipsum',
     ]);
 
-    Segment::assertNotTracked(function (SimpleSegmentEvent $identify) {
-        return $identify->toSegment()->data['first_name'] === 'Unexpected';
+    Segment::assertNotTracked(function (SimpleSegmentEvent $event) {
+        return $event->toSegment()->data['properties']['first_name'] === 'Unexpected';
     });
 });
 

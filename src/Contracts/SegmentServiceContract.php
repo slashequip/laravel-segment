@@ -38,4 +38,8 @@ interface SegmentServiceContract
     public function push(CanBeSentToSegment $segment): void;
 
     public function terminate(): void;
+
+    public function alias(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void;
+
+    public function aliasNow(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void;
 }

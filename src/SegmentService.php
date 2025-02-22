@@ -4,12 +4,14 @@ namespace SlashEquip\LaravelSegment;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use RuntimeException;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
 use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\Contracts\ShouldBeAnonymouslyIdentified;
 use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
 use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
+use SlashEquip\LaravelSegment\Contracts\SegmentPayloadable;
 use Throwable;
 
 class SegmentService implements SegmentServiceContract
@@ -21,7 +23,7 @@ class SegmentService implements SegmentServiceContract
     /** @var array<string, mixed> */
     private array $globalContext = [];
 
-    /** @var array<int, mixed> */
+    /** @var array<int, SegmentPayloadable> */
     private array $payloads = [];
 
     /**
@@ -136,36 +138,8 @@ class SegmentService implements SegmentServiceContract
     protected function getBatchData(): array
     {
         return collect($this->payloads)
-            ->map(fn (SegmentPayload $payload) => $this->getDataFromPayload($payload))
+            ->map(fn (SegmentPayload $payload) => $payload->data)
             ->all();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function getDataFromPayload(SegmentPayload $payload): array
-    {
-        $key = $payload->user instanceof ShouldBeAnonymouslyIdentified ? 'anonymousId' : 'userId';
-
-        // Initial data.
-        $data = [
-            'type' => $payload->type->value,
-            $key => $payload->user->getSegmentIdentifier(),
-            'timestamp' => $payload->timestamp->format('Y-m-d\TH:i:s\Z'),
-        ];
-
-        // This is important, Segment will not handle empty
-        // data arrays as expected and will drop the event.
-        if (! empty($payload->data)) {
-            $data[$payload->getDataKey()] = $payload->data;
-        }
-
-        // If it's a tracking call we need an event name!
-        if ($payload->type === SegmentPayloadType::Track) {
-            $data['event'] = $payload->event;
-        }
-
-        return $data;
     }
 
     protected function handleResponseErrors(Response $response): void
@@ -214,5 +188,36 @@ class SegmentService implements SegmentServiceContract
     protected function inSafeMode(): bool
     {
         return filter_var($this->config['safe_mode'] ?? true, FILTER_VALIDATE_BOOL);
+    }
+
+    public function alias(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void
+    {
+        $this->push(
+            new SimpleSegmentAlias(
+                $previousUser,
+                $currentUser ?? $this->getGlobalUserOrFail()
+            )
+        );
+    }
+
+    public function aliasNow(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void
+    {
+        $this->push(
+            new SimpleSegmentAlias(
+                $previousUser,
+                $currentUser ?? $this->getGlobalUserOrFail()
+            )
+        );
+
+        $this->terminate();
+    }
+
+    private function getGlobalUserOrFail(): CanBeIdentifiedForSegment
+    {
+        if (! isset($this->globalUser)) {
+            throw new RuntimeException('No global user set and no current user provided for alias.');
+        }
+
+        return $this->globalUser;
     }
 }
