@@ -249,8 +249,14 @@ class SegmentFake implements SegmentServiceContract
         );
     }
 
-    public function assertAliased(?Closure $callback = null): void
+    public function assertAliased(Closure|int|null $callback = null): void
     {
+        if (is_numeric($callback)) {
+            $this->assertAliasedTimes($callback);
+
+            return;
+        }
+
         PHPUnit::assertTrue(
             $this->aliases($callback)->count() > 0,
             'The expected aliases were not called.'

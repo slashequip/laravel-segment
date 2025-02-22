@@ -512,3 +512,169 @@ it('can identify a user using the identify method for a given anonymous user', f
             ]);
     });
 });
+
+it('can alias a user using the alias method with global user', function () {
+    // Given we have users
+    $previousUser = new SegmentTestUser('previous');
+    $currentUser = new SegmentTestUser('current');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we have set global user
+    Segment::setGlobalUser($currentUser);
+
+    // And we have set global context
+    Segment::setGlobalContext([
+        'ip' => '127.0.0.1',
+    ]);
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the alias method
+    Segment::alias($previousUser);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === ['ip' => '127.0.0.1']
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'alias',
+                'previousId' => 'previous',
+                'userId' => 'current',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+            ]);
+    });
+});
+
+it('can alias a user using the alias method with explicit current user', function () {
+    // Given we have users
+    $previousUser = new SegmentTestUser('previous');
+    $currentUser = new SegmentTestUser('current');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the alias method
+    Segment::alias($previousUser, $currentUser);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'alias',
+                'previousId' => 'previous',
+                'userId' => 'current',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+            ]);
+    });
+});
+
+it('can alias a user using the aliasNow method with global user', function () {
+    // Given we have users
+    $previousUser = new SegmentTestUser('previous');
+    $currentUser = new SegmentTestUser('current');
+
+    // And we are deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we have set global user
+    Segment::setGlobalUser($currentUser);
+
+    // And we have set global context
+    Segment::setGlobalContext([
+        'ip' => '127.0.0.1',
+    ]);
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the aliasNow method
+    Segment::aliasNow($previousUser);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === ['ip' => '127.0.0.1']
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'alias',
+                'previousId' => 'previous',
+                'userId' => 'current',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+            ]);
+    });
+});
+
+it('can alias a user using the aliasNow method with explicit current user', function () {
+    // Given we have users
+    $previousUser = new SegmentTestUser('previous');
+    $currentUser = new SegmentTestUser('current');
+
+    // And we are deferring
+    setDefer(true);
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the aliasNow method
+    Segment::aliasNow($previousUser, $currentUser);
+
+    // Then we have made the calls to Segment
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && $request['context'] === []
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'alias',
+                'previousId' => 'previous',
+                'userId' => 'current',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+            ]);
+    });
+});
+
+it('throws an exception when trying to alias without a global user and no current user provided', function () {
+    // Given we have a user
+    $previousUser = new SegmentTestUser('previous');
+
+    // And we are not deferring
+    setDefer();
+
+    // And we have set a write key
+    setWriteKey();
+
+    // And we are faking the Http facade
+    Http::fake();
+
+    // When we call the alias method
+    expect(fn () => Segment::alias($previousUser))
+        ->toThrow(RuntimeException::class, 'No global user set and no current user provided for alias.');
+});

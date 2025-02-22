@@ -5,6 +5,7 @@ use SlashEquip\LaravelSegment\Facades\Fakes\SegmentFake;
 use SlashEquip\LaravelSegment\Facades\Segment;
 use SlashEquip\LaravelSegment\SimpleSegmentEvent;
 use SlashEquip\LaravelSegment\SimpleSegmentIdentify;
+use SlashEquip\LaravelSegment\SimpleSegmentAlias;
 
 beforeEach(function () {
     $this->user = new class implements CanBeIdentifiedForSegment
@@ -220,4 +221,123 @@ it('can test that an activity was not tracked by its event name', function () {
     ]);
 
     Segment::assertEventNotTracked('some_random_event');
+});
+
+it('can test that no aliases were called', function () {
+    Segment::fake();
+
+    Segment::assertNothingAliased();
+});
+
+it('can test that an alias was called', function () {
+    Segment::fake();
+
+    $previousUser = new class implements CanBeIdentifiedForSegment
+    {
+        public function getSegmentIdentifier(): string
+        {
+            return 'previous';
+        }
+    };
+
+    Segment::setGlobalUser($this->user);
+    Segment::alias($previousUser);
+
+    Segment::assertAliased();
+    Segment::assertAliasedTimes(1);
+});
+
+it('can test that an alias was called immediately', function () {
+    Segment::fake();
+
+    $previousUser = new class implements CanBeIdentifiedForSegment
+    {
+        public function getSegmentIdentifier(): string
+        {
+            return 'previous';
+        }
+    };
+
+    Segment::setGlobalUser($this->user);
+    Segment::aliasNow($previousUser);
+
+    Segment::assertAliased();
+    Segment::assertAliasedTimes(1);
+});
+
+it('can test that an alias was called one time', function () {
+    Segment::fake();
+
+    $previousUser = new class implements CanBeIdentifiedForSegment
+    {
+        public function getSegmentIdentifier(): string
+        {
+            return 'previous';
+        }
+    };
+
+    Segment::setGlobalUser($this->user);
+    Segment::alias($previousUser);
+
+    Segment::assertAliased(1);
+    Segment::assertAliasedTimes(1);
+});
+
+it('can test that an alias was called multiple times', function () {
+    Segment::fake();
+
+    $previousUser = new class implements CanBeIdentifiedForSegment
+    {
+        public function getSegmentIdentifier(): string
+        {
+            return 'previous';
+        }
+    };
+
+    Segment::setGlobalUser($this->user);
+    Segment::alias($previousUser);
+    Segment::alias($previousUser);
+    Segment::alias($previousUser);
+
+    Segment::assertAliased(3);
+    Segment::assertAliasedTimes(3);
+});
+
+it('can test that an alias was called using a closure', function () {
+    Segment::fake();
+
+    $previousUser = new class implements CanBeIdentifiedForSegment
+    {
+        public function getSegmentIdentifier(): string
+        {
+            return 'previous';
+        }
+    };
+
+    Segment::setGlobalUser($this->user);
+    Segment::alias($previousUser);
+
+    Segment::assertAliased(function (SimpleSegmentAlias $alias) {
+        return $alias->toSegment()->data['previousId'] === 'previous'
+            && $alias->toSegment()->data['userId'] === 'user';
+    });
+});
+
+it('can test that an alias was not called using a closure', function () {
+    Segment::fake();
+
+    $previousUser = new class implements CanBeIdentifiedForSegment
+    {
+        public function getSegmentIdentifier(): string
+        {
+            return 'previous';
+        }
+    };
+
+    Segment::setGlobalUser($this->user);
+    Segment::alias($previousUser);
+
+    Segment::assertNotAliased(function (SimpleSegmentAlias $alias) {
+        return $alias->toSegment()->data['previousId'] === 'unexpected';
+    });
 });

@@ -56,22 +56,22 @@ class PendingUserSegment
         $this->service->terminate();
     }
 
-    public function alias(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void
+    public function alias(CanBeIdentifiedForSegment $previousUser): void
     {
         $this->service->push(
             new SimpleSegmentAlias(
                 $previousUser,
-                $currentUser ?? $this->user
+                $this->user
             )
         );
     }
 
-    public function aliasNow(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null): void
+    public function aliasNow(CanBeIdentifiedForSegment $previousUser): void
     {
         $this->service->push(
             new SimpleSegmentAlias(
                 $previousUser,
-                $currentUser ?? $this->user
+                $this->user
             )
         );
 
