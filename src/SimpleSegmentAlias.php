@@ -20,4 +20,4 @@ class SimpleSegmentAlias implements CanBeSentToSegment
             currentUser: $this->currentUser,
         );
     }
-} 
+}

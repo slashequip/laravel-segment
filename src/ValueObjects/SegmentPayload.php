@@ -2,13 +2,10 @@
 
 namespace SlashEquip\LaravelSegment\ValueObjects;
 
-use DateTime;
-use DateTimeZone;
-use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
-use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
-use SlashEquip\LaravelSegment\Contracts\SegmentPayloadable;
-use SlashEquip\LaravelSegment\Contracts\ShouldBeAnonymouslyIdentified;
 use Carbon\CarbonInterface;
+use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
+use SlashEquip\LaravelSegment\Contracts\ShouldBeAnonymouslyIdentified;
+use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
 
 class SegmentPayload
 {
@@ -30,7 +27,7 @@ class SegmentPayload
             'type' => SegmentPayloadType::Identify->value,
             self::getIdKey($user) => $user->getSegmentIdentifier(),
             'traits' => $data,
-            'timestamp' => self::getTimestamp($timestamp),  
+            'timestamp' => self::getTimestamp($timestamp),
         ]);
     }
 
@@ -45,7 +42,7 @@ class SegmentPayload
             self::getIdKey($user) => $user->getSegmentIdentifier(),
             'event' => $event,
             'properties' => $data,
-            'timestamp' => self::getTimestamp($timestamp),  
+            'timestamp' => self::getTimestamp($timestamp),
         ]);
     }
 
@@ -58,7 +55,7 @@ class SegmentPayload
             'type' => SegmentPayloadType::Alias->value,
             'previousId' => $previousUser->getSegmentIdentifier(),
             'userId' => $currentUser->getSegmentIdentifier(),
-            'timestamp' => self::getTimestamp($timestamp),  
+            'timestamp' => self::getTimestamp($timestamp),
         ]);
     }
 
