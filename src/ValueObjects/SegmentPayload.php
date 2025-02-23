@@ -18,6 +18,9 @@ class SegmentPayload
         //
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function forIdentify(
         CanBeIdentifiedForSegment $user,
         array $data = [],
@@ -31,6 +34,9 @@ class SegmentPayload
         ]);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function forTrack(
         CanBeIdentifiedForSegment $user,
         string $event,

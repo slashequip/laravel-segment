@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 use RuntimeException;
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
-use SlashEquip\LaravelSegment\Contracts\SegmentPayloadable;
 use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 use Throwable;
@@ -21,7 +20,7 @@ class SegmentService implements SegmentServiceContract
     /** @var array<string, mixed> */
     private array $globalContext = [];
 
-    /** @var array<int, SegmentPayloadable> */
+    /** @var array<int, SegmentPayload> */
     private array $payloads = [];
 
     /**

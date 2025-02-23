@@ -18,7 +18,7 @@ beforeEach(function () {
 });
 
 it('can be resolved from the container', function () {
-    $this->assertInstanceOf(SegmentFake::class, Segment::fake());
+    expect(Segment::fake())->toBeInstanceOf(SegmentFake::class);
 });
 
 it('can test no identities were called', function () {

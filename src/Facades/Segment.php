@@ -12,11 +12,13 @@ use SlashEquip\LaravelSegment\PendingUserSegment;
 
 /**
  * @method static void setGlobalUser(CanBeIdentifiedForSegment $globalUser)
- * @method static void setGlobalContext(?array $globalContext)
- * @method static void track(string $event, ?array $eventData = null)
- * @method static void trackNow(string $event, ?array $eventData = null)
- * @method static void identify(?array $identifyData = null)
- * @method static void identifyNow(?array $identifyData = null)
+ * @method static void setGlobalContext(?array<string, mixed> $globalContext)
+ * @method static void track(string $event, ?array<string, mixed> $eventData = null)
+ * @method static void trackNow(string $event, ?array<string, mixed> $eventData = null)
+ * @method static void identify(?array<string, mixed> $identifyData = null)
+ * @method static void identifyNow(?array<string, mixed> $identifyData = null)
+ * @method static void alias(CanBeIdentifiedForSegment $previousUser, ?CanBeIdentifiedForSegment $currentUser = null)
+ * @method static void aliasNow(CanBeIdentifiedForSegment $previousUser)
  * @method static PendingUserSegment forUser(CanBeIdentifiedForSegment $user)
  * @method static void push(CanBeSentToSegment $segment)
  * @method static void terminate()
@@ -29,6 +31,10 @@ use SlashEquip\LaravelSegment\PendingUserSegment;
  * @method static void assertEventTracked(string $event,Closure|int|null $callback = null)
  * @method static void assertNotTracked(Closure $callback = null)
  * @method static void assertNothingTracked()
+ * @method static void assertAliased(Closure|int|null $callback = null)
+ * @method static void assertAliasedTimes(int $times)
+ * @method static void assertNotAliased(Closure $callback = null)
+ * @method static void assertNothingAliased()
  *
  * @see \SlashEquip\LaravelSegment\SegmentService
  * @see SegmentFake

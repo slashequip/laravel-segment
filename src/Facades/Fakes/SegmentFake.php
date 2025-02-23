@@ -19,7 +19,7 @@ class SegmentFake implements SegmentServiceContract
     private CanBeIdentifiedForSegment $user;
 
     /** @var array<string, mixed> */
-    private ?array $context = [];
+    private array $context = [];
 
     /** @var array<int, SimpleSegmentEvent> */
     private array $events = [];
@@ -135,7 +135,7 @@ class SegmentFake implements SegmentServiceContract
     {
         $identities = collect($this->identities);
 
-        PHPUnit::assertEmpty($identities, $identities->count().' events were found unexpectedly.');
+        PHPUnit::assertEmpty($identities->all(), $identities->count().' events were found unexpectedly.');
     }
 
     public function assertTracked(Closure|int|null $callback = null): void
@@ -190,7 +190,7 @@ class SegmentFake implements SegmentServiceContract
     {
         $events = collect($this->events);
 
-        PHPUnit::assertEmpty($events, $events->count().' events were found unexpectedly.');
+        PHPUnit::assertEmpty($events->all(), $events->count().' events were found unexpectedly.');
     }
 
     /**
@@ -201,6 +201,9 @@ class SegmentFake implements SegmentServiceContract
         return $this->context;
     }
 
+    /**
+     * @return Collection<int, SimpleSegmentIdentify>
+     */
     private function identities(?Closure $callback = null): Collection
     {
         $identities = collect($this->identities);
@@ -214,6 +217,9 @@ class SegmentFake implements SegmentServiceContract
         return $identities->filter(fn (SimpleSegmentIdentify $identity) => $callback($identity));
     }
 
+    /**
+     * @return Collection<int, SimpleSegmentEvent>
+     */
     private function events(?Closure $callback = null, ?string $event = null): Collection
     {
         $events = collect($this->events);
@@ -285,9 +291,12 @@ class SegmentFake implements SegmentServiceContract
     {
         $aliases = collect($this->aliases);
 
-        PHPUnit::assertEmpty($aliases, $aliases->count().' aliases were found unexpectedly.');
+        PHPUnit::assertEmpty($aliases->all(), $aliases->count().' aliases were found unexpectedly.');
     }
 
+    /**
+     * @return Collection<int, SimpleSegmentAlias>
+     */
     private function aliases(?Closure $callback = null): Collection
     {
         $aliases = collect($this->aliases);
