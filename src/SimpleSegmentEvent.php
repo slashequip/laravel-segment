@@ -4,7 +4,6 @@ namespace SlashEquip\LaravelSegment;
 
 use SlashEquip\LaravelSegment\Contracts\CanBeIdentifiedForSegment;
 use SlashEquip\LaravelSegment\Contracts\CanBeSentToSegment;
-use SlashEquip\LaravelSegment\Enums\SegmentPayloadType;
 use SlashEquip\LaravelSegment\ValueObjects\SegmentPayload;
 
 class SimpleSegmentEvent implements CanBeSentToSegment
@@ -20,9 +19,8 @@ class SimpleSegmentEvent implements CanBeSentToSegment
 
     public function toSegment(): SegmentPayload
     {
-        return new SegmentPayload(
+        return SegmentPayload::forTrack(
             user: $this->user,
-            type: SegmentPayloadType::Track,
             event: $this->event,
             data: $this->eventData,
         );

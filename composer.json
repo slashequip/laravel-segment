@@ -19,9 +19,9 @@
         "illuminate/contracts": "^10.0|^11.0"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.18",
         "mockery/mockery": "^1.6",
-        "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^8.5|^9.0",
         "pestphp/pest": "^2.36"
     },

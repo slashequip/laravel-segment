@@ -1,0 +1,76 @@
+---
+description: Standards for writing tests using Pest PHP in this project.
+globs: tests/**/*.php
+---
+ # Pest PHP Testing Standards
+
+Standards for writing tests using Pest PHP in this project.
+
+<rule>
+name: pest_php_testing
+description: Standards for writing tests using Pest PHP
+filters:
+  - type: file_extension
+    pattern: "\\.php$"
+  - type: path
+    pattern: "tests/.*"
+
+actions:
+  - type: suggest
+    message: |
+      When writing tests with Pest PHP:
+
+      1. File Organization:
+         - Place unit tests in `tests/Unit/`
+         - Place feature tests in `tests/Feature/`
+         - Match test file structure to source code structure
+         - Name test files with `Test.php` suffix
+
+      2. Test Structure:
+         - Use descriptive test descriptions in natural language
+         - Group related tests using `describe()`
+         - Use `it()` for individual test cases
+         - Use `beforeEach()` for common setup
+         - Use `expect()` for assertions
+
+      3. Naming Conventions:
+         - Use natural language for test descriptions
+         - Start descriptions with the subject under test
+         - Describe the behavior or outcome being tested
+
+      4. Common Patterns:
+         ```php
+         describe('ClassName', function() {
+             beforeEach(function() {
+                 // Setup
+             });
+
+             it('does something specific', function() {
+                 // Test
+             });
+         });
+         ```
+
+      5. Assertions:
+         - Use fluent expectations with `expect()`
+         - Chain assertions for readability
+         - Use descriptive matchers
+
+examples:
+  - input: |
+      // Bad: PHPUnit style
+      public function test_it_does_something()
+      {
+          $this->assertEquals(expected, actual);
+      }
+
+      // Good: Pest PHP style
+      it('does something', function() {
+          expect(actual)->toBe(expected);
+      });
+    output: "Correctly formatted Pest PHP test"
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

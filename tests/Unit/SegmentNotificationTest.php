@@ -24,10 +24,10 @@ it('can send a notification to a notifiable entity', function () {
 
             $payload = $arg->toSegment();
 
-            return $payload->user->getSegmentIdentifier() === '123456'
-                && $payload->event === 'Segment Test Notification'
-                && count($payload->data) === 1
-                && $payload->data['some'] === 'thing';
+            return $payload->data['userId'] === '123456'
+                && $payload->data['event'] === 'Segment Test Notification'
+                && count($payload->data['properties']) === 1
+                && $payload->data['properties']['some'] === 'thing';
         }))
         ->once();
 });
