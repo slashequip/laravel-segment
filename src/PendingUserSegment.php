@@ -7,15 +7,10 @@ use SlashEquip\LaravelSegment\Contracts\SegmentServiceContract;
 
 class PendingUserSegment
 {
-    private SegmentServiceContract $service;
-
-    private CanBeIdentifiedForSegment $user;
-
-    public function __construct(SegmentServiceContract $service, CanBeIdentifiedForSegment $user)
-    {
-        $this->service = $service;
-        $this->user = $user;
-    }
+    public function __construct(
+        private SegmentServiceContract $service,
+        private CanBeIdentifiedForSegment $user
+    ) {}
 
     /**
      * @param  array<string, mixed>|null  $eventData
