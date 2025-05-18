@@ -20,6 +20,15 @@ it('can be resolved from the container', function () {
     $this->assertInstanceOf(SegmentFake::class, Segment::fake());
 });
 
+it('can set global context on the fake', function () {
+    $context = ['foo' => 'bar'];
+
+    $fake = Segment::fake();
+    Segment::setGlobalContext($context);
+
+    expect($fake->getContext())->toBe($context);
+});
+
 it('can test no identities were called', function () {
     Segment::fake();
 
