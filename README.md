@@ -165,7 +165,7 @@ Segment::identify([
 
 // If you have defer enabled in the config
 // you can still identify a user immediately using identifyNow.
-Segment::identifyNow('User Signed Up', [
+Segment::identifyNow([
     'source' => 'Product Hunt',
 ]);
 ```
