@@ -221,3 +221,23 @@ it('can test that an activity was not tracked by its event name', function () {
 
     Segment::assertEventNotTracked('some_random_event');
 });
+
+it('can track an event without data using fake', function () {
+    Segment::fake();
+
+    Segment::forUser($this->user)->track('empty_event');
+
+    Segment::assertTracked(function (SimpleSegmentEvent $event) {
+        return $event->toSegment()->data === [];
+    });
+});
+
+it('can identify without data using fake', function () {
+    Segment::fake();
+
+    Segment::forUser($this->user)->identify();
+
+    Segment::assertIdentified(function (SimpleSegmentIdentify $identify) {
+        return $identify->toSegment()->data === [];
+    });
+});

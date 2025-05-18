@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @mixin Model
+ *
+ * @phpstan-ignore trait.unused
  */
 trait HasSegmentIdentityByKey
 {

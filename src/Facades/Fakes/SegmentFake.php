@@ -17,7 +17,7 @@ class SegmentFake implements SegmentServiceContract
     private CanBeIdentifiedForSegment $user;
 
     /** @var array<string, mixed> */
-    private ?array $context = [];
+    private array $context = [];
 
     /** @var array<int, SimpleSegmentEvent> */
     private array $events = [];
@@ -43,7 +43,10 @@ class SegmentFake implements SegmentServiceContract
      */
     public function identify(?array $identifyData = []): void
     {
-        $this->identities[] = new SimpleSegmentIdentify($this->user, $identifyData);
+        $this->identities[] = new SimpleSegmentIdentify(
+            $this->user,
+            $identifyData
+        );
     }
 
     /**
@@ -51,7 +54,10 @@ class SegmentFake implements SegmentServiceContract
      */
     public function identifyNow(?array $identifyData = []): void
     {
-        $this->identities[] = new SimpleSegmentIdentify($this->user, $identifyData);
+        $this->identities[] = new SimpleSegmentIdentify(
+            $this->user,
+            $identifyData
+        );
     }
 
     /**
@@ -59,7 +65,11 @@ class SegmentFake implements SegmentServiceContract
      */
     public function track(string $event, ?array $eventData = null): void
     {
-        $this->events[] = new SimpleSegmentEvent($this->user, $event, $eventData);
+        $this->events[] = new SimpleSegmentEvent(
+            $this->user,
+            $event,
+            $eventData
+        );
     }
 
     /**
@@ -67,7 +77,11 @@ class SegmentFake implements SegmentServiceContract
      */
     public function trackNow(string $event, ?array $eventData = null): void
     {
-        $this->events[] = new SimpleSegmentEvent($this->user, $event, $eventData);
+        $this->events[] = new SimpleSegmentEvent(
+            $this->user,
+            $event,
+            $eventData
+        );
     }
 
     public function forUser(CanBeIdentifiedForSegment $user): PendingUserSegment
@@ -109,7 +123,8 @@ class SegmentFake implements SegmentServiceContract
         $count = collect($this->identities)->count();
 
         PHPUnit::assertSame(
-            $times, $count,
+            $times,
+            $count,
             "The identity was called {$count} times instead of {$times} times."
         );
     }
@@ -117,7 +132,8 @@ class SegmentFake implements SegmentServiceContract
     public function assertNotIdentified(?Closure $callback = null): void
     {
         PHPUnit::assertCount(
-            0, $this->identities($callback),
+            0,
+            $this->identities($callback),
             'The unexpected identity was called.'
         );
     }
@@ -126,7 +142,10 @@ class SegmentFake implements SegmentServiceContract
     {
         $identities = collect($this->identities);
 
-        PHPUnit::assertEmpty($identities, $identities->count().' events were found unexpectedly.');
+        PHPUnit::assertEmpty(
+            $identities->all(),
+            $identities->count().' events were found unexpectedly.'
+        );
     }
 
     public function assertTracked(Closure|int|null $callback = null): void
@@ -148,13 +167,16 @@ class SegmentFake implements SegmentServiceContract
         $count = collect($this->events)->count();
 
         PHPUnit::assertSame(
-            $times, $count,
+            $times,
+            $count,
             "The event called {$count} times instead of {$times} times."
         );
     }
 
-    public function assertEventTracked(string $event, Closure|int|null $callback = null): void
-    {
+    public function assertEventTracked(
+        string $event,
+        Closure|int|null $callback = null
+    ): void {
         PHPUnit::assertTrue(
             $this->events($callback, $event)->count() > 0,
             'The expected events were not called.'
@@ -164,15 +186,19 @@ class SegmentFake implements SegmentServiceContract
     public function assertNotTracked(?Closure $callback = null): void
     {
         PHPUnit::assertCount(
-            0, $this->events($callback),
+            0,
+            $this->events($callback),
             'The unexpected event was called.'
         );
     }
 
-    public function assertEventNotTracked(string $event, Closure|int|null $callback = null): void
-    {
+    public function assertEventNotTracked(
+        string $event,
+        Closure|int|null $callback = null
+    ): void {
         PHPUnit::assertCount(
-            0, $this->events($callback, $event),
+            0,
+            $this->events($callback, $event),
             'The expected events were not called.'
         );
     }
@@ -181,7 +207,10 @@ class SegmentFake implements SegmentServiceContract
     {
         $events = collect($this->events);
 
-        PHPUnit::assertEmpty($events, $events->count().' events were found unexpectedly.');
+        PHPUnit::assertEmpty(
+            $events->all(),
+            $events->count().' events were found unexpectedly.'
+        );
     }
 
     /**
@@ -192,6 +221,9 @@ class SegmentFake implements SegmentServiceContract
         return $this->context;
     }
 
+    /**
+     * @return Collection<int, SimpleSegmentIdentify>
+     */
     private function identities(?Closure $callback = null): Collection
     {
         $identities = collect($this->identities);
@@ -202,11 +234,18 @@ class SegmentFake implements SegmentServiceContract
 
         $callback = $callback ?: fn () => true;
 
-        return $identities->filter(fn (SimpleSegmentIdentify $identity) => $callback($identity));
+        return $identities->filter(
+            fn (SimpleSegmentIdentify $identity) => $callback($identity)
+        );
     }
 
-    private function events(?Closure $callback = null, ?string $event = null): Collection
-    {
+    /**
+     * @return Collection<int, SimpleSegmentEvent>
+     */
+    private function events(
+        ?Closure $callback = null,
+        ?string $event = null
+    ): Collection {
         $events = collect($this->events);
 
         if ($events->isEmpty()) {
@@ -217,7 +256,9 @@ class SegmentFake implements SegmentServiceContract
 
         return $events
             ->when($event, function (Collection $collection) use ($event) {
-                return $collection->filter(function (SimpleSegmentEvent $segmentEvent) use ($event) {
+                return $collection->filter(function (
+                    SimpleSegmentEvent $segmentEvent
+                ) use ($event) {
                     return $segmentEvent->toSegment()->event === $event;
                 });
             })
