@@ -22,7 +22,7 @@ class SimpleSegmentIdentify implements CanBeSentToSegment
         return new SegmentPayload(
             user: $this->user,
             type: SegmentPayloadType::Identify,
-            data: $this->identifyData,
+            data: $this->identifyData ?? [],
         );
     }
 }

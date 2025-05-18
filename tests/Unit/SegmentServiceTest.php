@@ -512,3 +512,50 @@ it('can identify a user using the identify method for a given anonymous user', f
             ]);
     });
 });
+
+it('can track without event data', function () {
+    $user = new SegmentTestUser('abcd');
+
+    setDefer();
+    setWriteKey();
+    Segment::setGlobalUser($user);
+    Http::fake();
+
+    Segment::track('Something Happened');
+
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'track',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+                'event' => 'Something Happened',
+            ]);
+    });
+});
+
+it('can identify without traits data', function () {
+    $user = new SegmentTestUser('abcd');
+
+    setDefer();
+    setWriteKey();
+    Segment::setGlobalUser($user);
+    Http::fake();
+
+    Segment::identify();
+
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Content-Type', 'application/json')
+            && $request->hasHeader('Authorization', 'Bearer '.base64_encode('key_1234:'))
+            && $request->url() === 'https://api.segment.io/v1/batch'
+            && count($request['batch']) === 1
+            && arraysMatch($request['batch'][0], [
+                'type' => 'identify',
+                'userId' => 'abcd',
+                'timestamp' => (new DateTime)->format('Y-m-d\TH:i:s\Z'),
+            ]);
+    });
+});

@@ -24,7 +24,7 @@ class SimpleSegmentEvent implements CanBeSentToSegment
             user: $this->user,
             type: SegmentPayloadType::Track,
             event: $this->event,
-            data: $this->eventData,
+            data: $this->eventData ?? [],
         );
     }
 }
