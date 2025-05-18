@@ -12,11 +12,11 @@ use SlashEquip\LaravelSegment\PendingUserSegment;
 
 /**
  * @method static void setGlobalUser(CanBeIdentifiedForSegment $globalUser)
- * @method static void setGlobalContext(?array $globalContext)
- * @method static void track(string $event, ?array $eventData = null)
- * @method static void trackNow(string $event, ?array $eventData = null)
- * @method static void identify(?array $identifyData = null)
- * @method static void identifyNow(?array $identifyData = null)
+ * @method static void setGlobalContext(?array<string, mixed> $globalContext)
+ * @method static void track(string $event, ?array<string, mixed> $eventData = null)
+ * @method static void trackNow(string $event, ?array<string, mixed> $eventData = null)
+ * @method static void identify(?array<string, mixed> $identifyData = null)
+ * @method static void identifyNow(?array<string, mixed> $identifyData = null)
  * @method static PendingUserSegment forUser(CanBeIdentifiedForSegment $user)
  * @method static void push(CanBeSentToSegment $segment)
  * @method static void terminate()
@@ -42,7 +42,7 @@ class Segment extends Facade
 
     public static function fake(): SegmentFake
     {
-        return tap(new SegmentFake, function (SegmentFake $fake) {
+        return tap(new SegmentFake(), function (SegmentFake $fake) {
             static::swap($fake);
         });
     }
