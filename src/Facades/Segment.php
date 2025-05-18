@@ -42,7 +42,7 @@ class Segment extends Facade
 
     public static function fake(): SegmentFake
     {
-        return tap(new SegmentFake(), function (SegmentFake $fake) {
+        return tap(new SegmentFake, function (SegmentFake $fake) {
             static::swap($fake);
         });
     }

@@ -114,7 +114,7 @@ class SegmentFake implements SegmentServiceContract
 
         PHPUnit::assertTrue(
             $this->identities($callback)->count() > 0,
-            "The expected identities were not called."
+            'The expected identities were not called.'
         );
     }
 
@@ -134,7 +134,7 @@ class SegmentFake implements SegmentServiceContract
         PHPUnit::assertCount(
             0,
             $this->identities($callback),
-            "The unexpected identity was called."
+            'The unexpected identity was called.'
         );
     }
 
@@ -144,7 +144,7 @@ class SegmentFake implements SegmentServiceContract
 
         PHPUnit::assertEmpty(
             $identities->all(),
-            $identities->count() . " events were found unexpectedly."
+            $identities->count().' events were found unexpectedly.'
         );
     }
 
@@ -158,7 +158,7 @@ class SegmentFake implements SegmentServiceContract
 
         PHPUnit::assertTrue(
             $this->events($callback)->count() > 0,
-            "The expected events were not called."
+            'The expected events were not called.'
         );
     }
 
@@ -179,7 +179,7 @@ class SegmentFake implements SegmentServiceContract
     ): void {
         PHPUnit::assertTrue(
             $this->events($callback, $event)->count() > 0,
-            "The expected events were not called."
+            'The expected events were not called.'
         );
     }
 
@@ -188,7 +188,7 @@ class SegmentFake implements SegmentServiceContract
         PHPUnit::assertCount(
             0,
             $this->events($callback),
-            "The unexpected event was called."
+            'The unexpected event was called.'
         );
     }
 
@@ -199,7 +199,7 @@ class SegmentFake implements SegmentServiceContract
         PHPUnit::assertCount(
             0,
             $this->events($callback, $event),
-            "The expected events were not called."
+            'The expected events were not called.'
         );
     }
 
@@ -209,7 +209,7 @@ class SegmentFake implements SegmentServiceContract
 
         PHPUnit::assertEmpty(
             $events->all(),
-            $events->count() . " events were found unexpectedly."
+            $events->count().' events were found unexpectedly.'
         );
     }
 
@@ -232,10 +232,10 @@ class SegmentFake implements SegmentServiceContract
             return collect();
         }
 
-        $callback = $callback ?: fn() => true;
+        $callback = $callback ?: fn () => true;
 
         return $identities->filter(
-            fn(SimpleSegmentIdentify $identity) => $callback($identity)
+            fn (SimpleSegmentIdentify $identity) => $callback($identity)
         );
     }
 
@@ -252,7 +252,7 @@ class SegmentFake implements SegmentServiceContract
             return collect();
         }
 
-        $callback = $callback ?: fn() => true;
+        $callback = $callback ?: fn () => true;
 
         return $events
             ->when($event, function (Collection $collection) use ($event) {
@@ -262,6 +262,6 @@ class SegmentFake implements SegmentServiceContract
                     return $segmentEvent->toSegment()->event === $event;
                 });
             })
-            ->filter(fn(SimpleSegmentEvent $event) => $callback($event));
+            ->filter(fn (SimpleSegmentEvent $event) => $callback($event));
     }
 }
