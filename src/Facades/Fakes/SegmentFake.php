@@ -214,7 +214,7 @@ class SegmentFake implements SegmentServiceContract
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
     public function getContext(): ?array
     {
