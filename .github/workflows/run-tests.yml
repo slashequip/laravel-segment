@@ -10,9 +10,9 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: ['8.2','8.3', '8.4']
-        laravel: ['11.*', '12.*']
-        stability: ['prefer-stable']
+        php: ["8.2", "8.3", "8.4"]
+        laravel: ["11.*", "12.*"]
+        stability: ["prefer-stable"]
         include:
           - laravel: 11.*
             testbench: 9.*
@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
