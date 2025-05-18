@@ -249,7 +249,7 @@ happens during the Laravel termination.
 
 ### Safe mode
 By default, safe-mode is turned on. When safe-mode is active it will swallow any exceptions thrown when making the HTTP
-request to Segmenta and report them automatically to the exception handler, allow your app to continue running. When
+request to Segment and report them automatically to the exception handler, allow your app to continue running. When
 disabled then the exception will be thrown.
 
 ## Testing
