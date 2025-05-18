@@ -417,7 +417,7 @@ it('terminates directly when using identifyNow while deferred is enabled with gl
     });
 });
 
-it('does not sent tracking events when not enabled', function () {
+it('does not send tracking events when not enabled', function () {
     // Given we have a user
     $user = new SegmentTestUser('abcd');
 
