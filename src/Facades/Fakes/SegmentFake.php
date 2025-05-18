@@ -41,7 +41,7 @@ class SegmentFake implements SegmentServiceContract
     /**
      * @param  array<string, mixed>  $identifyData
      */
-    public function identify(?array $identifyData = []): void
+    public function identify(?array $identifyData = null): void
     {
         $this->identities[] = new SimpleSegmentIdentify(
             $this->user,
@@ -52,7 +52,7 @@ class SegmentFake implements SegmentServiceContract
     /**
      * @param  array<string, mixed>  $identifyData
      */
-    public function identifyNow(?array $identifyData = []): void
+    public function identifyNow(?array $identifyData = null): void
     {
         $this->identities[] = new SimpleSegmentIdentify(
             $this->user,
