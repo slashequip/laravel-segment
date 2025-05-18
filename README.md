@@ -258,6 +258,24 @@ disabled then the exception will be thrown.
 ./vendor/bin/pest
 ```
 
+### Using `Segment::fake()` in tests
+
+To prevent real HTTP requests when running your own test suite, call
+`Segment::fake()` before executing the code under test. This swaps the
+Segment service with a fake that records events and identity calls. You can
+then use assertion helpers to verify what was sent:
+
+```php
+use SlashEquip\LaravelSegment\Facades\Segment;
+
+Segment::fake();
+
+// Code that should trigger Segment events
+
+Segment::assertTracked('User Signed Up');
+Segment::assertIdentified();
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
